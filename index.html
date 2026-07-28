@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Circuit — Digital Nurse Foundations</title>
+<meta name="description" content="Clinical coding, technical coding and NHS informatics foundations for renal nurses moving into digital roles. With narration and ready-to-run teaching sessions.">
+<meta name="theme-color" content="#FAF7FB">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Circuit">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CIRCUIT v2 — watercolour
+   Eleven modules, eleven washes. The circuit metaphor survives
+   the repaint: a painted ribbon primes as you work down it.
+   ============================================================ */
+:root{
+  --ground:#FAF7FB;
+  --paper:#FFFDFE;
+  --ink:#3B2E4A;
+  --ink-soft:#6E6080;
+  --ink-faint:#9C90AA;
+  --rule:#E6DEEC;
+  --rule-soft:#F0EAF4;
+
+  --display:'Fraunces',Georgia,serif;
+  --body:'Spectral',Georgia,serif;
+  --data:'IBM Plex Mono',ui-monospace,monospace;
+
+  --pad:20px;
+  --rail:36px;
+  --nav-h:64px;
+  --r:14px;
+
+  /* active module wash — repainted on open */
+  --tint:#F4EBFA; --mid:#D3B5E8; --deep:#8B52B8;
+}
+
+/* eleven paint swatches */
+.w1 {--tint:#FDEAF0;--mid:#F5B4C8;--deep:#C0507A}
+.w2 {--tint:#FEF0E4;--mid:#FBC79A;--deep:#C06E2E}
+.w3 {--tint:#FDF6DD;--mid:#F1D888;--deep:#9C7C1C}
+.w4 {--tint:#E5F7EE;--mid:#A9E2C6;--deep:#2B8460}
+.w5 {--tint:#E6F3FB;--mid:#A6D5EF;--deep:#2A77A5}
+.w6 {--tint:#ECEEFB;--mid:#B9C2EE;--deep:#4C5CB4}
+.w7 {--tint:#F4EBFA;--mid:#D3B5E8;--deep:#8B52B8}
+.w8 {--tint:#E4F5F4;--mid:#A3DDD9;--deep:#26827D}
+.w9 {--tint:#FDEDE8;--mid:#F8BCA8;--deep:#C25538}
+.w10{--tint:#EDF3E6;--mid:#C2D9A8;--deep:#5A7C35}
+.w11{--tint:#F7EAF3;--mid:#E3B5D6;--deep:#984283}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.64;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:calc(var(--nav-h) + 12px + env(safe-area-inset-bottom));
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* ---------- watercolour ground ---------- */
+#wash{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+#wash b{
+  position:absolute;display:block;border-radius:50%;
+  filter:blur(58px);opacity:.5;
+  transition:background 1.1s ease, opacity 1.1s ease;
+}
+#wash b:nth-child(1){width:74vw;height:74vw;top:-22vw;left:-24vw;background:var(--mid)}
+#wash b:nth-child(2){width:62vw;height:62vw;top:26vh;right:-26vw;background:var(--tint);opacity:.85}
+#wash b:nth-child(3){width:80vw;height:80vw;bottom:-32vw;left:-16vw;background:var(--mid);opacity:.32}
+#grain{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.19'/%3E%3C/svg%3E");
+}
+
+:focus-visible{outline:2.5px solid var(--deep);outline-offset:3px;border-radius:4px}
+
+/* ---------- type ---------- */
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.14;margin:0;font-variation-settings:'SOFT' 40,'WONK' 1}
+h1{font-size:2.15rem;font-weight:700}
+h2{font-size:1.34rem}
+h3{font-size:1.06rem}
+p{margin:0 0 1em}
+p:last-child{margin-bottom:0}
+a{color:var(--deep);text-underline-offset:3px}
+strong{font-weight:600}
+code,.mono{font-family:var(--data);font-size:.85em}
+
+.eyebrow{
+  font-family:var(--data);font-size:.66rem;font-weight:500;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);
+}
+
+#app{max-width:720px;margin:0 auto;position:relative}
+.view{display:none;padding:0 var(--pad)}
+.view.on{display:block;animation:rise .36s cubic-bezier(.2,.7,.3,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.vtop{padding-top:calc(env(safe-area-inset-top) + 22px)}
+
+/* ---------- masthead ---------- */
+.mast{padding:calc(env(safe-area-inset-top) + 26px) var(--pad) 0;max-width:720px;margin:0 auto}
+.mast h1{font-size:2.7rem;letter-spacing:-0.02em;font-weight:700}
+.mast .strap{font-size:.97rem;color:var(--ink-soft);margin-top:8px;max-width:42ch;font-style:italic}
+
+/* ---------- priming ribbon ---------- */
+.prime{margin:24px 0 4px;padding:15px 17px;background:rgba(255,253,254,.72);
+  border:1px solid var(--rule);border-radius:var(--r);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.prime-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:11px}
+.prime-count{font-family:var(--data);font-size:.72rem;color:var(--ink-soft)}
+.prime-count b{color:var(--ink);font-weight:600}
+.tube{position:relative;height:11px;border-radius:6px;background:var(--rule-soft);overflow:hidden}
+.tube-fill{position:absolute;inset:0;width:0%;border-radius:6px;
+  background:linear-gradient(90deg,#F5B4C8,#FBC79A,#F1D888,#A9E2C6,#A6D5EF,#B9C2EE,#D3B5E8);
+  transition:width .75s cubic-bezier(.3,.8,.3,1)}
+.tube-ticks{position:absolute;inset:0;display:flex}
+.tube-ticks i{flex:1;border-right:1.5px solid rgba(255,255,255,.75)}
+.tube-ticks i:last-child{border:0}
+
+/* ---------- filters ---------- */
+.limbs{display:flex;gap:7px;margin:20px 0 4px;flex-wrap:wrap}
+.limb{font-family:var(--data);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:8px 14px;border:1px solid var(--rule);background:rgba(255,255,255,.6);
+  color:var(--ink-soft);border-radius:20px;cursor:pointer;transition:all .18s ease}
+.limb[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* ---------- module ribbon ---------- */
+.line{position:relative;margin:18px 0 34px;padding-left:var(--rail)}
+.line::before{content:"";position:absolute;left:12px;top:8px;bottom:8px;width:3px;
+  background:var(--rule);border-radius:3px}
+.line::after{content:"";position:absolute;left:12px;top:8px;width:3px;height:var(--primed,0%);
+  border-radius:3px;transition:height .85s cubic-bezier(.3,.8,.3,1);
+  background:linear-gradient(180deg,#F5B4C8,#FBC79A,#F1D888,#A9E2C6,#A6D5EF,#B9C2EE,#D3B5E8,#A3DDD9,#F8BCA8,#C2D9A8,#E3B5D6)}
+
+.mod{position:relative;display:block;width:100%;text-align:left;cursor:pointer;
+  background:linear-gradient(140deg,var(--tint) 0%,rgba(255,253,254,.94) 62%);
+  border:1px solid var(--rule);border-radius:var(--r);padding:16px 17px;margin-bottom:12px;
+  font-family:inherit;color:inherit;transition:transform .16s ease,box-shadow .16s ease}
+.mod:active{transform:scale(.987)}
+.mod.done{box-shadow:inset 0 0 0 1.5px var(--mid)}
+.port{position:absolute;left:calc(-1 * var(--rail) + 4px);top:20px;width:17px;height:17px;
+  border-radius:50%;background:var(--ground);border:3px solid var(--rule);z-index:2;transition:all .3s ease}
+.mod.done .port{background:var(--deep);border-color:var(--deep)}
+.mod.done .port::after{content:"";position:absolute;left:3px;top:4.5px;width:6px;height:3px;
+  border-left:1.7px solid #fff;border-bottom:1.7px solid #fff;transform:rotate(-45deg)}
+.mod-n{font-family:var(--data);font-size:.7rem;font-weight:500;color:var(--deep);letter-spacing:.06em}
+.mod-title{font-family:var(--display);font-weight:600;font-size:1.24rem;line-height:1.16;margin:5px 0 6px}
+.blurb{font-size:.93rem;color:var(--ink-soft);line-height:1.5;margin:0}
+.meta{font-family:var(--data);font-size:.65rem;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-faint);margin-top:11px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tag{padding:3px 9px;border-radius:11px;background:var(--mid);color:var(--ink);font-weight:500;opacity:.85}
+
+/* ---------- reader ---------- */
+.topbar{display:flex;align-items:center;gap:10px;margin:calc(env(safe-area-inset-top) + 16px) 0 14px}
+.back{background:none;border:0;padding:7px 0;cursor:pointer;font-family:var(--data);
+  font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+.listen{margin-left:auto;display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+  background:var(--deep);color:#fff;border:0;border-radius:20px;padding:9px 16px;
+  font-family:var(--data);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase}
+.listen svg{width:13px;height:13px;fill:currentColor}
+.reader h1{font-size:1.95rem;margin:6px 0 10px}
+.lede{font-size:1.05rem;color:var(--ink-soft);font-style:italic;margin-bottom:8px}
+
+.sec{background:rgba(255,253,254,.76);border:1px solid var(--rule);border-radius:var(--r);
+  padding:19px 18px;margin-top:15px;backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+  transition:box-shadow .3s ease}
+.sec.speaking{box-shadow:0 0 0 2.5px var(--mid)}
+.sec h2{margin-bottom:13px;font-size:1.2rem}
+.sec ul,.sec ol{margin:0 0 1em;padding-left:1.15em}
+.sec li{margin-bottom:.45em}
+.sec li::marker{color:var(--deep)}
+
+.note{border-left:4px solid var(--deep);background:var(--tint);padding:14px 16px;margin:18px 0;
+  border-radius:0 10px 10px 0;font-size:.95rem}
+.note .lbl{display:block;font-family:var(--data);font-size:.63rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--deep);margin-bottom:6px;font-weight:500}
+.warn{border-left-color:#C0507A;background:#FDEAF0}
+.warn .lbl{color:#C0507A}
+
+.code{font-family:var(--data);font-size:.8rem;line-height:1.65;background:#3B2E4A;color:#EADFF2;
+  padding:14px 15px;border-radius:10px;overflow-x:auto;margin:16px 0;white-space:pre;-webkit-overflow-scrolling:touch}
+.code .c{color:#A99BB8;font-style:italic}
+.code .k{color:#F5B4C8}
+.code .s{color:#F1D888}
+
+.pair{display:grid;grid-template-columns:1fr;gap:10px;margin:16px 0}
+.pair>div{padding:14px 15px;border-radius:10px;background:var(--paper);border:1px solid var(--rule)}
+.pair .a{background:#FDEAF0;border-color:#F5C9D8}
+.pair .b{background:#E6F3FB;border-color:#BFDCEF}
+.pair h3{font-family:var(--data);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;font-weight:500}
+.pair .a h3{color:#C0507A}
+.pair .b h3{color:#2A77A5}
+.pair p{font-size:.92rem;margin:0}
+@media(min-width:560px){.pair{grid-template-columns:1fr 1fr}}
+
+/* ---------- quiz ---------- */
+.quiz{margin-top:22px;background:rgba(255,253,254,.76);border:1px solid var(--rule);
+  border-radius:var(--r);padding:19px 18px}
+.quiz>.eyebrow{display:block;margin-bottom:15px;color:var(--deep)}
+.q{margin-bottom:24px}
+.q:last-of-type{margin-bottom:16px}
+.stem{font-weight:500;margin-bottom:11px}
+.opt{display:block;width:100%;text-align:left;background:var(--paper);border:1px solid var(--rule);
+  border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer;font-family:inherit;
+  font-size:.94rem;color:inherit;line-height:1.45;transition:all .15s ease}
+.opt:disabled{cursor:default}
+.opt.right{border-color:#2B8460;background:#E5F7EE;box-shadow:inset 4px 0 0 #2B8460}
+.opt.wrong{border-color:#C0507A;background:#FDEAF0;box-shadow:inset 4px 0 0 #C0507A}
+.why{font-size:.9rem;color:var(--ink-soft);margin-top:10px;padding-left:13px;border-left:2px solid var(--mid)}
+
+.finish{width:100%;padding:15px;margin-top:6px;cursor:pointer;background:var(--deep);color:#fff;
+  border:0;border-radius:11px;font-family:var(--display);font-weight:600;font-size:1rem}
+.finish.undo{background:transparent;color:var(--ink-soft);border:1px solid var(--rule)}
+
+/* ---------- glossary ---------- */
+.search{width:100%;padding:14px 15px;margin:16px 0 6px;border:1px solid var(--rule);border-radius:11px;
+  background:var(--paper);font-family:var(--data);font-size:.9rem;color:var(--ink)}
+.search::placeholder{color:var(--ink-faint)}
+.gl{background:rgba(255,253,254,.7);border:1px solid var(--rule);border-radius:11px;padding:14px 15px;margin-bottom:9px}
+.gl dt{font-family:var(--display);font-weight:600;font-size:1.03rem}
+.gl dt .exp{font-family:var(--data);font-size:.7rem;font-weight:400;color:var(--ink-faint);display:block;margin-top:3px}
+.gl dd{margin:8px 0 0;font-size:.95rem;color:var(--ink-soft)}
+.empty{padding:34px 0;text-align:center;color:var(--ink-soft);font-style:italic}
+
+/* ---------- teach ---------- */
+.sess{background:rgba(255,253,254,.78);border:1px solid var(--rule);border-radius:var(--r);
+  padding:19px 18px;margin-bottom:14px}
+.sess .dur{font-family:var(--data);font-size:.66rem;letter-spacing:.11em;text-transform:uppercase;color:var(--deep)}
+.sess h2{margin:6px 0 6px;font-size:1.24rem}
+.sess .who{font-size:.92rem;color:var(--ink-soft);font-style:italic;margin-bottom:14px}
+.run{list-style:none;padding:0;margin:12px 0 0}
+.run li{display:flex;gap:12px;padding:9px 0;border-top:1px solid var(--rule-soft);font-size:.94rem}
+.run li b{font-family:var(--data);font-size:.72rem;color:var(--deep);min-width:46px;padding-top:3px;font-weight:500}
+.out{background:var(--tint);border-radius:10px;padding:13px 15px;margin:12px 0;font-size:.93rem}
+.out b{display:block;font-family:var(--data);font-size:.63rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--deep);margin-bottom:7px;font-weight:500}
+.out ul{margin:0;padding-left:1.1em}
+.out li{margin-bottom:.35em}
+
+.swap{background:rgba(255,253,254,.78);border:1px solid var(--rule);border-radius:11px;
+  padding:15px 16px;margin-bottom:10px}
+.swap .t{font-family:var(--display);font-weight:600;font-size:1.02rem;margin-bottom:8px}
+.swap .say{font-size:.95rem;border-left:3px solid var(--mid);padding-left:12px;color:var(--ink)}
+.swap .tho{font-size:.87rem;color:var(--ink-faint);margin-top:9px;font-style:italic}
+
+/* ---------- pathway ---------- */
+.rung{display:flex;gap:14px;padding:16px;border-radius:11px;margin-bottom:9px;
+  background:rgba(255,253,254,.7);border:1px solid var(--rule)}
+.rung .band{font-family:var(--data);font-size:.74rem;font-weight:500;color:var(--deep);min-width:54px;padding-top:3px}
+.rung h3{margin-bottom:5px}
+.rung p{font-size:.93rem;color:var(--ink-soft);margin:0}
+.rung.here{background:var(--tint);border-color:var(--mid)}
+.chk{list-style:none;padding:0;margin:14px 0 0}
+.chk li{padding:12px 0 12px 30px;border-top:1px solid var(--rule-soft);position:relative;font-size:.95rem}
+.chk li::before{content:"";position:absolute;left:2px;top:18px;width:12px;height:12px;
+  border:2px solid var(--mid);border-radius:4px}
+.chk li b{font-weight:600}
+.chk li span{display:block;font-size:.87rem;color:var(--ink-soft);margin-top:3px}
+
+/* ---------- player ---------- */
+#player{position:fixed;left:0;right:0;bottom:calc(var(--nav-h) + env(safe-area-inset-bottom));
+  z-index:45;background:var(--deep);color:#fff;padding:10px 14px 11px;display:none;
+  box-shadow:0 -3px 18px rgba(59,46,74,.16)}
+#player.on{display:block;animation:up .3s ease both}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+#player .bar{height:3px;background:rgba(255,255,255,.28);border-radius:3px;margin-bottom:9px;overflow:hidden}
+#player .bar i{display:block;height:100%;width:0%;background:#fff;transition:width .4s ease}
+#player .row{display:flex;align-items:center;gap:11px}
+#player .lbl{flex:1;min-width:0}
+#player .lbl b{display:block;font-family:var(--display);font-size:.92rem;font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#player .lbl span{font-family:var(--data);font-size:.62rem;opacity:.78;letter-spacing:.06em}
+#player button{background:rgba(255,255,255,.16);border:0;color:#fff;cursor:pointer;
+  border-radius:50%;width:36px;height:36px;display:grid;place-items:center;flex:none}
+#player button svg{width:15px;height:15px;fill:currentColor}
+#player button.big{width:44px;height:44px;background:#fff;color:var(--deep)}
+#player button.big svg{width:17px;height:17px}
+#player .rate{width:auto;border-radius:18px;padding:0 12px;font-family:var(--data);font-size:.68rem}
+#player .tip{font-size:.68rem;opacity:.75;margin-top:8px;font-family:var(--data);line-height:1.4}
+
+/* ---------- nav ---------- */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(250,247,251,.9);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--rule);
+  padding-bottom:env(safe-area-inset-bottom);display:flex}
+nav button{flex:1;background:none;border:0;padding:11px 3px 12px;cursor:pointer;font-family:var(--data);
+  font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);
+  display:flex;flex-direction:column;align-items:center;gap:5px;position:relative}
+nav button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+nav button[aria-current="page"]{color:var(--deep)}
+nav button[aria-current="page"]::before{content:"";position:absolute;top:0;left:24%;right:24%;height:2.5px;
+  background:var(--deep);border-radius:0 0 3px 3px}
+
+footer{padding:30px var(--pad) 26px;font-size:.83rem;color:var(--ink-soft);
+  border-top:1px solid var(--rule);margin-top:32px}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+</style>
+</head>
+<body class="w7">
+
+<div id="wash"><b></b><b></b><b></b></div><div id="grain"></div>
+
+<header class="mast" id="mast">
+  <h1>Circuit</h1>
+  <p class="strap">Digital nurse foundations, wired for the renal unit. Read it, or press play and walk.</p>
+</header>
+
+<div id="app">
+  <section class="view on" id="v-learn">
+    <div class="prime">
+      <div class="prime-top">
+        <span class="eyebrow">Primed</span>
+        <span class="prime-count"><b id="pDone">0</b> / <span id="pTotal">11</span> modules</span>
+      </div>
+      <div class="tube"><div class="tube-fill" id="tubeFill"></div><div class="tube-ticks" id="ticks"></div></div>
+    </div>
+    <div class="limbs" id="limbs"></div>
+    <div class="line" id="modList"></div>
+  </section>
+
+  <section class="view reader" id="v-read"></section>
+  <section class="view" id="v-teach"></section>
+
+  <section class="view" id="v-gloss">
+    <div class="vtop">
+      <span class="eyebrow">Reference</span>
+      <h1 style="margin:7px 0 8px;font-size:1.95rem">Glossary</h1>
+      <p class="lede">The acronyms people use in meetings as though everyone already knows them.</p>
+    </div>
+    <input class="search" id="glSearch" type="search" placeholder="Search — try FHIR, Caldicott, denominator" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <p class="prime-count" style="margin:4px 0 14px"><span id="glCount"></span></p>
+    <dl id="glList" style="margin:0"></dl>
+  </section>
+
+  <section class="view" id="v-path"></section>
+
+  <footer>
+    <p><strong>Circuit</strong> is a study and teaching aid, not a governance document. National standards, dataset versions and NHS structures change — verify anything you quote in a business case, safety case or interview against the current source.</p>
+    <p style="margin-top:12px">Narration uses your device's built-in voice. Progress resets on reload — see the <code>Store</code> block at the top of the script.</p>
+  </footer>
+</div>
+
+<div id="player">
+  <div class="bar"><i id="pBar"></i></div>
+  <div class="row">
+    <button id="pPrev" aria-label="Previous section"><svg viewBox="0 0 24 24"><path d="M18 5v14l-11-7zM6 5h2v14H6z"/></svg></button>
+    <button class="big" id="pPlay" aria-label="Play or pause"><svg viewBox="0 0 24 24"><path d="M7 4h4v16H7zM13 4h4v16h-4z"/></svg></button>
+    <button id="pNext" aria-label="Next section"><svg viewBox="0 0 24 24"><path d="M6 5v14l11-7zM16 5h2v14h-2z"/></svg></button>
+    <div class="lbl"><b id="pTitle">—</b><span id="pPos"></span></div>
+    <button class="rate" id="pRate">1.0×</button>
+    <button id="pStop" aria-label="Stop narration"><svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg></button>
+  </div>
+  <p class="tip" id="pTip"></p>
+</div>
+
+<nav>
+  <button data-go="learn" aria-current="page">
+    <svg viewBox="0 0 24 24"><path d="M4 5h7a3 3 0 0 1 3 3v11a2.5 2.5 0 0 0-2.5-2.5H4zM20 5h-7a3 3 0 0 0-3 3v11a2.5 2.5 0 0 1 2.5-2.5H20z"/></svg>
+    Learn
+  </button>
+  <button data-go="teach">
+    <svg viewBox="0 0 24 24"><path d="M3 6.5 12 3l9 3.5-9 3.5z"/><path d="M7 9v5.5c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5V9"/><path d="M21 7v6"/></svg>
+    Teach
+  </button>
+  <button data-go="gloss">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+    Glossary
+  </button>
+  <button data-go="path">
+    <svg viewBox="0 0 24 24"><path d="M5 20v-6M12 20V9M19 20V4"/><path d="M3 20h18"/></svg>
+    Pathway
+  </button>
+</nav>
+
+<script>
+/* ============================================================
+   Store — swap for real persistence when you deploy.
+   localStorage:
+     get(){ try{return JSON.parse(localStorage.getItem('circuit')||'[]')}catch(e){return []} }
+     set(v){ try{localStorage.setItem('circuit',JSON.stringify(v))}catch(e){} }
+   Firebase REST: PUT/GET https://<db>.firebaseio.com/circuit/<uid>.json
+   ============================================================ */
+const Store = (()=>{ let mem=[]; return { get:()=>mem, set:v=>{mem=v} } })();
+
+/* ============================================================
+   MODULES
+   limb: 'clin' = meaning & terminology · 'tech' = systems & data
+   ============================================================ */
+const MODULES = [
+{
+id:'m1', limb:'clin', mins:9,
+title:'What the job actually is',
+blurb:'The roles, the ladder, and why trusts hire nurses instead of analysts.',
+lede:'A digital nurse is not an IT person who happens to be a nurse. You are hired because you can tell when a screen is lying about what happened at the chair.',
+secs:[
+ {h:'The one-sentence version', b:`<p>Nursing informatics is the work of making sure that what happens in care, what gets recorded, and what the organisation can count are the same thing. Most of the job is closing gaps between those three.</p>
+ <p>Everything else — the standards, the acronyms, the safety paperwork — exists to serve that sentence. When you get lost in a meeting, come back to it.</p>`},
+ {h:'Why a nurse and not an analyst', b:`<p>Analysts can build a form. They cannot tell you that the form asks for a post-dialysis weight at a point in the session where nobody has one yet, or that the mandatory field will get filled with a plausible number rather than left blank because the record will not close otherwise.</p>
+ <p>That judgement — knowing where a design will quietly generate false data — is the thing you are actually being paid for. It is also, conveniently, the thing that is hardest to hire.</p>
+ <div class="note"><span class="lbl">At the chair</span>You already do this. When you look at intradialytic rounding paperwork and know which observations were genuinely taken at the time and which were reconstructed at the end of the shift, that is clinical informatics judgement. The job is doing it systematically, and writing it down in a form that a project board will act on.</div>`},
+ {h:'The rungs', b:`<p>Titles vary enormously between trusts, which is itself worth knowing — do not assume a job title means the same thing in two adverts. Broadly:</p>
+ <ul>
+ <li><strong>Digital champion / super-user</strong> — a clinical role with a digital element. Usually unbanded extra duties.</li>
+ <li><strong>Digital nurse / clinical systems trainer</strong> — often Band 6. Training, floorwalking, go-live support, build testing.</li>
+ <li><strong>Nursing information officer / digital nurse lead / clinical safety officer</strong> — typically Band 7 to 8a. Owns configuration decisions, safety cases, benefits, and speaks for nursing in design.</li>
+ <li><strong>Deputy CNIO</strong> — 8b to 8c. Programme-level, multiple systems, strategy input.</li>
+ <li><strong>CNIO</strong> — 8d and above, sometimes board-adjacent. Sets the clinical digital agenda alongside the CCIO and CIO.</li>
+ </ul>
+ <p>The CCIO is the medical equivalent and the CIO runs the technology function. In most trusts the CNIO reports into either the Chief Nurse or the CIO, and which one it is tells you a great deal about how the organisation thinks.</p>`},
+ {h:'The frameworks people will name-drop', b:`<p>You do not need to memorise these, but you need to recognise them and know roughly what they are for.</p>
+ <ul>
+ <li><strong>What Good Looks Like</strong> — NHS England's framework describing digital maturity across a set of success measures, covering things like leadership, secure foundations, safe practice, supporting staff, empowering citizens and improving care. Business cases are frequently mapped against it.</li>
+ <li><strong>Frontline Digitisation</strong> — the national programme pushing trusts to a functioning electronic patient record and a minimum digital capability.</li>
+ <li><strong>Digital maturity assessment</strong> — periodic self-assessment scoring; boards care about the number.</li>
+ </ul>
+ <div class="note"><span class="lbl">Use it</span>When you write your business case, one line mapping your project to a national framework does real work. It moves your project from "a nurse's idea" to "our contribution to a national expectation" in the reader's head.</div>`},
+ {h:'What actually gets you the interview', b:`<p>Being bilingual. Plenty of nurses are enthusiastic about technology. Far fewer can sit in a room with an integration engineer, a Caldicott Guardian and a matron and translate in all three directions without losing anything.</p>
+ <p>The rest of this app is the second language. You already have the first.</p>`}
+],
+quiz:[
+ {q:'A supplier demo shows a nursing observation form where every field is mandatory. What is the informatics concern?',
+  o:['It will slow the nurses down','Mandatory fields on data that is not always available generate plausible false entries','Mandatory fields are not permitted under NHS standards','The form should be paper first'],
+  a:1, w:'Speed matters, but the safety issue is data fabrication. If the record will not save without a value, someone will supply one. A mandatory field is a design decision about what staff will do when they do not have the answer.'},
+ {q:'Who typically holds the medical counterpart role to the CNIO?',
+  o:['The CIO','The CCIO','The Caldicott Guardian','The SIRO'],
+  a:1, w:'The Chief Clinical Information Officer is usually a doctor. The CIO runs technology; the Caldicott Guardian and SIRO are information governance roles.'}
+]
+},
+
+{
+id:'m2', limb:'clin', mins:14,
+title:'Terminology versus classification',
+blurb:'SNOMED CT, ICD-10, OPCS-4, dm+d — and the single distinction that makes them make sense.',
+lede:'Almost every confusion about NHS coding dissolves once you separate describing care as it happens from counting it afterwards.',
+secs:[
+ {h:'The distinction', b:`<div class="pair">
+ <div class="a"><h3>Terminology</h3><p>Describes clinical meaning at the point of care, in as much detail as you like. Recorded <em>by clinicians, as it happens</em>. In the NHS this is SNOMED CT.</p></div>
+ <div class="b"><h3>Classification</h3><p>Groups care into buckets afterwards, for counting, comparing and paying. Applied <em>by trained clinical coders, after discharge</em>. In the NHS this is ICD-10 and OPCS-4.</p></div>
+ </div>
+ <p>They are not competitors and one does not replace the other. Terminology is rich and open-ended; classification is deliberately coarse because you cannot do statistics on a category with one member in it.</p>
+ <p>A useful test: if two clinically different things must land in the same bucket for the bucket to be countable, you are looking at a classification.</p>`},
+ {h:'SNOMED CT, structurally', b:`<p>SNOMED CT is the mandated clinical terminology for recording care in NHS electronic records. It is maintained internationally by SNOMED International, and NHS England produces and releases the UK Edition with UK-specific content.</p>
+ <p>The pieces you need to be able to name:</p>
+ <ul>
+ <li><strong>Concept</strong> — a unit of clinical meaning with a permanent numeric identifier.</li>
+ <li><strong>Fully specified name</strong> — the unambiguous name, with its type in brackets, e.g. <span class="mono">(procedure)</span> or <span class="mono">(disorder)</span>.</li>
+ <li><strong>Preferred term and synonyms</strong> — what you actually display to users. Several synonyms, one concept.</li>
+ <li><strong>Hierarchy</strong> — concepts sit in IS-A relationships, so a specific dialysis procedure is a child of a broader one. This is what makes querying work.</li>
+ <li><strong>Post-coordination</strong> — combining concepts to express something no single concept covers.</li>
+ <li><strong>Reference set (refset)</strong> — a curated subset for a particular use. This is the bit you will actually commission.</li>
+ </ul>
+ <div class="code"><span class="c">// one concept, several ways of saying it</span>
+Concept ID   <span class="s">302497006</span>
+FSN          Haemodialysis <span class="k">(procedure)</span>
+Synonyms     Dialysis, renal
+             Haemodialysis procedure
+IS-A         Dialysis procedure <span class="k">(procedure)</span></div>
+ <p>The hierarchy is why terminology beats a dropdown list. If everything is bound to concepts, a query for "any dialysis procedure" finds the specific ones underneath it. If everything is free text, it finds nothing.</p>`},
+ {h:'ICD-10 and OPCS-4', b:`<p><strong>ICD-10</strong> classifies diagnoses. It is the WHO's international classification and remains the mandated diagnostic classification in the NHS. In hospitals, trained clinical coders read the record after discharge and assign codes.</p>
+ <p><strong>OPCS-4</strong> classifies procedures and interventions, and is UK-specific.</p>
+ <p>Those codes flow into national data sets, and from there into activity statistics, national comparisons, benchmarking programmes and payment. This is why coding quality is a finance issue as well as a clinical one, and why coders will ask you to document things in ways that feel pedantic.</p>
+ <p><strong>ICD-11</strong> exists and the UK has been planning a transition, but ICD-10 remains the mandated classification. Check current NHS England guidance rather than assuming — this is exactly the kind of fact that dates.</p>
+ <div class="note"><span class="lbl">Interview line</span>"The record should capture SNOMED CT at the point of care and map to ICD-10 for secondary uses, rather than asking clinicians to think in classification terms." That one sentence signals you understand the architecture.</div>`},
+ {h:'dm+d and the rest', b:`<p><strong>dm+d</strong> — the dictionary of medicines and devices. The NHS standard for identifying medicines and medical devices unambiguously, and what electronic prescribing runs on. If you ever work on medicines administration in the dialysis unit, this is the vocabulary.</p>
+ <p><strong>NHS Data Model and Dictionary</strong> — defines national data items and their permitted values. When someone asks "what counts as an attendance", this is where the answer lives.</p>
+ <p><strong>Read codes / CTV3</strong> — the deprecated legacy terminology, replaced by SNOMED CT, but still embedded in decades of historical GP records. You will meet them in old data.</p>`},
+ {h:'What this means for your field specification', b:`<p>The single most valuable thing a nurse can do to a data specification is convert free text fields into bound, coded fields — and know which ones genuinely need to stay free text.</p>
+ <p>For each field, ask three questions:</p>
+ <ol>
+ <li>Will anyone ever want to <em>count</em> this? If yes, it must be coded.</li>
+ <li>Is there an existing concept or refset, or do we need to request one?</li>
+ <li>What happens when the true answer is not in the list? If there is no honest escape route, staff will pick the nearest wrong option.</li>
+ </ol>
+ <div class="note"><span class="lbl">At the chair</span>Take your rounding field specification and mark each field C, N or F: <b>C</b> must be coded and countable, <b>N</b> is a number with defined units and a plausible range, <b>F</b> is free text and always will be. Then defend the F list. That single exercise is a portfolio artefact and an interview story at the same time.</div>`}
+],
+quiz:[
+ {q:'A colleague says "we should just use ICD-10 in the dialysis flowsheet so the data is standardised". What is wrong?',
+  o:['ICD-10 is not free to use','ICD-10 is a classification for grouping after the episode, not a terminology for recording care at the point of delivery','ICD-10 does not cover renal disease','ICD-10 has been withdrawn'],
+  a:1, w:'ICD-10 is deliberately coarse and applied retrospectively by coders. Point-of-care recording should use SNOMED CT, which can be mapped to ICD-10 for secondary uses.'},
+ {q:'Why does binding a field to SNOMED CT concepts beat a locally-built dropdown of the same options?',
+  o:['It is faster to type','Concepts carry permanent identifiers and sit in a hierarchy, so data stays queryable and comparable beyond your unit','Dropdowns are not allowed in NHS systems','It removes the need for validation'],
+  a:1, w:'A local dropdown means something only inside your system. Concepts have stable IDs and IS-A relationships, which is what lets someone query at a higher level or compare across organisations.'},
+ {q:'Which is the NHS standard for identifying medicines and devices?',
+  o:['OPCS-4','dm+d','ICD-10','CTV3'],
+  a:1, w:'The dictionary of medicines and devices. OPCS-4 is procedures, ICD-10 is diagnoses, CTV3 is the deprecated Read terminology.'}
+]
+},
+
+{
+id:'m3', limb:'clin', mins:12,
+title:'Renal data and where it goes',
+blurb:'UKRR, the quality dashboard, PatientView, and what your machines already know.',
+lede:'Renal is one of the most data-mature specialties in the NHS. That is an advantage and a trap: a lot already flows, so nobody notices the bits that do not.',
+secs:[
+ {h:'The registry', b:`<p>The <strong>UK Renal Registry</strong>, part of the UK Kidney Association, has collected longitudinal data on kidney patients since the mid-1990s for audit, quality improvement and research. Renal centres submit against a defined clinical dataset covering CKD and AKI — demographics, comorbidity, treatment modality, laboratory results and outcomes.</p>
+ <p>Historically most centres submitted quarterly, with a move towards daily flow through the UK Renal Data Collaboration. Completeness varies a great deal by data item and by centre, and the registry publishes that completeness — which is a quietly powerful lever if you want to argue for better capture.</p>
+ <div class="note"><span class="lbl">Use it</span>Look up your own centre's data completeness before you write a business case. "We are below the national position on this item" is a much stronger opening than "our documentation could be better".</div>`},
+ {h:'The quality dashboard', b:`<p>NHS England commissions the UKRR to collect a renal dialysis quality dashboard used to assess service quality. The indicators have included peritonitis rate in peritoneal dialysis, <em>Staphylococcus aureus</em> bacteraemia rate in haemodialysis, access to transplant listing, and PatientView uptake and usage.</p>
+ <p>Two things follow. First, these are the numbers your service is judged on, so anything that improves their accuracy has organisational value. Second, several depend on nursing documentation — which means your work sits directly upstream of them.</p>`},
+ {h:'Patient-facing and research data', b:`<ul>
+ <li><strong>PatientView</strong> — lets kidney patients see their own results and correspondence. Uptake and usage are dashboard indicators in their own right.</li>
+ <li><strong>RaDaR</strong> — the National Registry of Rare Kidney Diseases, consent-based, supporting rare disease research.</li>
+ <li><strong>Transplant data</strong> — linked with NHS Blood and Transplant records for listing and outcome analysis.</li>
+ </ul>`},
+ {h:'What the machines already know', b:`<p>A modern dialysis machine generates a large volume of structured data every session: blood flow rate, dialysate flow, conductivity, arterial and venous pressures, transmembrane pressure, ultrafiltration volume and rate, achieved treatment time, alarms and their timestamps, and — depending on configuration — online clearance measurements and blood volume monitoring.</p>
+ <p>Whether any of that reaches the electronic record depends on whether a therapy data management layer is deployed and integrated. Frequently it is collected by the machine estate but lands in a separate system that nursing staff never open, while a nurse writes a subset of the same numbers onto paper.</p>
+ <div class="warn"><span class="lbl">The question to ask</span>For every number your staff transcribe by hand: does a machine already hold this, in structured form, with a more accurate timestamp than a human can produce? If yes, transcription is not documentation. It is a manual integration, performed by a nurse, with no error handling.</div>
+ <p>That framing is unusually persuasive to informatics colleagues, because it describes the problem in their vocabulary rather than asking them to care about nursing workload.</p>`},
+ {h:'Numbers that must stay computable', b:`<p>Anything used for clinical decisions or reporting needs to be a typed value with defined units, not text. In renal that includes at minimum:</p>
+ <ul>
+ <li>Adequacy measures — Kt/V, urea reduction ratio</li>
+ <li>Pre and post weight, target weight, achieved ultrafiltration</li>
+ <li>Intradialytic observations with real timestamps</li>
+ <li>Vascular access type, and access events</li>
+ <li>Session duration prescribed versus achieved</li>
+ <li>Laboratory values feeding adequacy and anaemia management</li>
+ </ul>
+ <p>"Achieved versus prescribed" pairs are worth flagging specially. They are where quality lives, and they are almost always the pairs that get collapsed into a single field by a well-meaning form designer.</p>
+ <div class="note"><span class="lbl">At the chair</span>Intentional rounding data is unusual because its value is almost entirely in the timestamps. A rounding record without accurate times tells you nothing about whether rounding happened at the right intervals. If your digital design lets someone enter four rounds at the end of a session, you have built a compliance recording system, not a safety one.</div>`}
+],
+quiz:[
+ {q:'Why does a rounding record without accurate timestamps have so little value?',
+  o:['It cannot be printed','The whole point is interval assurance — without real times you can only prove that entries exist, not that rounding happened when it should','Timestamps are legally required for all NHS records','It cannot be sent to the registry'],
+  a:1, w:'The clinical claim being made is about frequency and timeliness. Strip the timing accuracy and the record evidences activity but not safety.'},
+ {q:'A nurse transcribes ultrafiltration volume from the machine onto a chart, then into the EPR. Best informatics description?',
+  o:['Duplication of effort','A manual integration performed by a clinician, with no error handling and a degraded timestamp','A necessary safety check','Standard double-documentation practice'],
+  a:1, w:'Framing it as an unmanaged integration puts the problem in language that gets attention from technical colleagues and project boards.'}
+]
+},
+
+{
+id:'m4', limb:'tech', mins:13,
+title:'How systems talk',
+blurb:'NHS number, HL7, FHIR, shared records — why integration is a project, not a setting.',
+lede:'Every disappointing digital project in the NHS has an integration story underneath it. Learn enough to ask the right question in the first meeting.',
+secs:[
+ {h:'Identity comes first', b:`<p>Nothing works without reliable identity. The <strong>NHS number</strong> is the primary patient identifier in England, and the <strong>Personal Demographics Service</strong> is the national record of demographics that systems check against, reached via the Spine.</p>
+ <p>Organisations and departments have codes too, from the Organisation Data Service. When someone says "which ODS code are you submitting under", they mean it precisely.</p>
+ <p>A large proportion of "the data does not match" problems are identity problems: two records for one person, a local hospital number that has no NHS number attached, or a system that matches on name and date of birth.</p>`},
+ {h:'HL7 version 2 — the workhorse', b:`<p>Most NHS interfaces still run on HL7 v2, a pipe-delimited messaging standard from the late 1980s. It is not elegant and it is everywhere.</p>
+ <p>Two message types cover most of what you will meet:</p>
+ <ul>
+ <li><strong>ADT</strong> — admission, discharge, transfer. Patient movements and demographic updates.</li>
+ <li><strong>ORU</strong> — observation result. Laboratory results arriving in the record.</li>
+ </ul>
+ <div class="code"><span class="c">// an HL7 v2 segment, roughly</span>
+<span class="k">PID</span>|1||<span class="s">9434765919</span>^^^NHS||SMITH^JANE||19540212|F
+<span class="k">OBX</span>|1|NM|<span class="s">2160-0</span>^Creatinine||742|umol/L|||||F</div>
+ <p>You will never write this. You do need to recognise it when an integration engineer shares a message and asks whether a field looks right — because you are the only person in the room who knows whether that result belongs to that patient at that time.</p>`},
+ {h:'FHIR — the modern one', b:`<p><strong>FHIR</strong> is the current interoperability standard. It models healthcare as resources exchanged over ordinary web APIs in JSON, which makes it far more approachable than what came before. The UK profiles the international standard as <strong>UK Core</strong>.</p>
+ <p>Resources you will hear named: Patient, Encounter, Observation, Condition, Procedure, MedicationRequest, DiagnosticReport.</p>
+ <div class="code">{
+  <span class="k">"resourceType"</span>: <span class="s">"Observation"</span>,
+  <span class="k">"status"</span>: <span class="s">"final"</span>,
+  <span class="k">"code"</span>: { <span class="k">"coding"</span>: [{
+      <span class="k">"system"</span>: <span class="s">"http://snomed.info/sct"</span>,
+      <span class="k">"code"</span>: <span class="s">"251076008"</span>,
+      <span class="k">"display"</span>: <span class="s">"Blood flow rate"</span> }] },
+  <span class="k">"valueQuantity"</span>: { <span class="k">"value"</span>: 350, <span class="k">"unit"</span>: <span class="s">"mL/min"</span> },
+  <span class="k">"effectiveDateTime"</span>: <span class="s">"2026-07-27T09:42:00+01:00"</span>
+}</div>
+ <p>Notice what that example demonstrates: the terminology from the previous module is <em>carried inside</em> the interoperability standard. SNOMED CT supplies the meaning; FHIR supplies the envelope. This is why the two limbs of this app are one circuit.</p>`},
+ {h:'Sharing beyond the trust', b:`<ul>
+ <li><strong>Shared care records</strong> — regional records pulling data across trusts, GP practices, community and social care within an integrated care system.</li>
+ <li><strong>GP Connect</strong> — access to GP record data from other settings.</li>
+ <li><strong>NHS App</strong> — the national patient-facing front door.</li>
+ <li><strong>MESH</strong> — the national message exchange used for bulk and file-based transfers.</li>
+ </ul>
+ <p>For a renal service this matters more than for most specialties, because your patients are frequently touching multiple organisations — satellite units, transplant centres, vascular access services, their GP.</p>`},
+ {h:'The questions to ask in meeting one', b:`<p>You do not need to build interfaces. You need to stop projects being approved on the assumption that data will simply appear.</p>
+ <ol>
+ <li>Where does this data originate, and is it structured at origin?</li>
+ <li>Is this a real-time interface or a scheduled file transfer, and what is the delay?</li>
+ <li>Does it flow both ways, or only one?</li>
+ <li>What happens when the interface fails — does anyone find out, and how?</li>
+ <li>Who owns the mapping between the two systems, and where is it documented?</li>
+ <li>Is this in the supplier's licence, or is it a chargeable piece of work nobody has budgeted?</li>
+ </ol>
+ <div class="warn"><span class="lbl">Question four</span>Ask it every time. Silent interface failure is one of the most common ways clinical systems become quietly unsafe — data stops arriving, screens still look normal, and nobody notices for weeks.</div>`}
+],
+quiz:[
+ {q:'In the FHIR example, what is SNOMED CT doing?',
+  o:['Replacing FHIR','Supplying the coded clinical meaning that the FHIR resource carries','Validating the patient identity','Encrypting the message'],
+  a:1, w:'FHIR is the envelope and structure; the terminology system supplies meaning. They are complementary layers, not alternatives.'},
+ {q:'Which question most reliably exposes a future safety problem in an integration?',
+  o:['How much does it cost','What happens when the interface fails, and who finds out','Which supplier built it','Is it FHIR or HL7 v2'],
+  a:1, w:'Silent failure is the classic pattern: the flow stops, the screen still looks plausible, and the gap is discovered long afterwards.'},
+ {q:'What is the Personal Demographics Service for?',
+  o:['Storing clinical notes','The national source of patient demographic data that systems verify against','Managing staff records','Submitting registry data'],
+  a:1, w:'PDS holds national demographics and is accessed via the Spine. Identity errors are the root of a large share of data quality problems.'}
+]
+},
+
+{
+id:'m5', limb:'clin', mins:12,
+title:'Clinical safety: DCB0129 and DCB0160',
+blurb:'The two standards, the hazard log, and the role that is genuinely hard to fill.',
+lede:'This is the fastest legitimate route from Band 6 to informatics credibility, because the role requires clinical registration and most technologists cannot hold it.',
+secs:[
+ {h:'Two standards, two duties', b:`<div class="pair">
+ <div class="a"><h3>DCB0129</h3><p>Applies to the <strong>manufacturer</strong> of health IT. Their duty to manage clinical risk in what they build and to supply safety documentation with the product.</p></div>
+ <div class="b"><h3>DCB0160</h3><p>Applies to the <strong>health organisation deploying</strong> it. Your trust's duty to manage clinical risk in how the thing is configured, used and integrated locally.</p></div>
+ </div>
+ <p>The distinction matters because a supplier's safety case does not cover your local configuration. A perfectly safe product can be deployed unsafely — wrong defaults, wrong workflow, wrong assumptions about who will be looking at the screen.</p>
+ <p>These are information standards under the Health and Social Care Act 2012, so compliance is not optional for organisations they apply to.</p>`},
+ {h:'The Clinical Safety Officer', b:`<p>Each organisation deploying health IT needs a named Clinical Safety Officer. The role requires current clinical registration, appropriate training in clinical risk management, and competence to make judgements about clinical risk.</p>
+ <p>That combination is the point. A CSO must be a clinician. There are not many clinicians who want to do it, and there are a lot of systems needing safety cases.</p>
+ <div class="note"><span class="lbl">Career note</span>Formal clinical safety training is one of the few credentials that is short, concrete, immediately usable, and cannot be obtained by a non-clinician. If you are choosing one thing to add to a Band 8a application, this is a strong candidate.</div>`},
+ {h:'The documents', b:`<ul>
+ <li><strong>Clinical risk management plan</strong> — how you will manage safety for this deployment: scope, who is involved, how decisions get made.</li>
+ <li><strong>Hazard log</strong> — the working register of identified hazards, causes, effects, existing controls, risk rating before and after mitigation, owner and status.</li>
+ <li><strong>Clinical safety case report</strong> — the argument, supported by evidence, that the system is acceptably safe in its intended context of use. It is a reasoned case, not a checklist.</li>
+ </ul>
+ <p>Risk is assessed on severity against likelihood, using a matrix defined in your local process, producing a rating that determines whether the risk is acceptable, needs mitigation, or blocks go-live.</p>`},
+ {h:'Finding hazards that are real', b:`<p>Weak hazard logs describe technology failing. Strong ones describe humans behaving reasonably in a badly designed situation. The second category is where harm actually comes from.</p>
+ <p>Prompts that reliably surface real hazards in a dialysis context:</p>
+ <ul>
+ <li>What happens during downtime, planned or unplanned? Who writes what, and how does it get back in?</li>
+ <li>What if two staff have the same record open?</li>
+ <li>What if the device on which this runs is out of battery, out of signal, or in a different bay?</li>
+ <li>What does the screen show when data has not arrived, versus when the true value is zero or normal?</li>
+ <li>What is the most likely wrong entry, and does anything catch it?</li>
+ <li>Whose responsibility becomes ambiguous once this is digital?</li>
+ </ul>
+ <div class="warn"><span class="lbl">The blank versus zero problem</span>Worth its own hazard entry in almost every project. A field displaying nothing because the interface failed and a field displaying nothing because the observation was not due look identical to a tired nurse at the end of a long shift.</div>`},
+ {h:'Adjacent things people confuse with this', b:`<ul>
+ <li><strong>DTAC</strong> — the Digital Technology Assessment Criteria, used when assessing whether a digital product meets baseline standards for NHS use. Procurement-facing, not the same as your DCB0160 duty.</li>
+ <li><strong>Software as a medical device</strong> — if software has a medical purpose, it may be regulated as a device by the MHRA. Anything that calculates a dose or drives a clinical decision needs this question asked early.</li>
+ <li><strong>Data protection impact assessment</strong> — an information governance requirement, not a safety one. Different document, different owner, both usually needed.</li>
+ </ul>
+ <div class="note"><span class="lbl">At the chair</span>Your existing hazard log is already the single strongest artefact you own for an 8a application. In interview, do not describe it as a document you produced. Describe one specific hazard you identified that nobody else had spotted, and what changed in the design because of it.</div>`}
+],
+quiz:[
+ {q:'A supplier provides their DCB0129 safety documentation. What does your trust still owe?',
+  o:['Nothing further','DCB0160 — local clinical risk management for how it is configured, integrated and used here','A DTAC assessment only','A data protection impact assessment only'],
+  a:1, w:'Manufacturer and deploying organisation carry separate duties. A safe product can be configured or deployed unsafely.'},
+ {q:'Which hazard is most characteristic of a well-written log?',
+  o:['The server may fail','A blank observation field looks identical whether the interface failed or the observation was not due, so a missing result may be read as normal','The supplier may go out of business','Staff may not like the new system'],
+  a:1, w:'The strongest hazards describe reasonable human interpretation of an ambiguous display. Pure technology failures are usually already covered by IT.'},
+ {q:'Why is the Clinical Safety Officer role a strategic opportunity for a nurse?',
+  o:['It is well paid','It requires current clinical registration, so non-clinicians cannot hold it, and demand exceeds supply','It replaces the need for other qualifications','It is a statutory board position'],
+  a:1, w:'The clinical registration requirement makes it a role only clinicians can fill — a genuine structural advantage.'}
+]
+},
+
+{
+id:'m6', limb:'clin', mins:11,
+title:'Information governance without the fog',
+blurb:'Lawful bases, Caldicott, DPIAs, and the difference between direct care and everything else.',
+lede:'Most IG confusion comes from one missing distinction: whether you are using data to care for the person in front of you, or for something else.',
+secs:[
+ {h:'The distinction that resolves most arguments', b:`<div class="pair">
+ <div class="a"><h3>Direct care</h3><p>Using information to care for that individual. Broadly supported by an expectation of sharing within the care team, subject to confidentiality and the person's objections.</p></div>
+ <div class="b"><h3>Secondary uses</h3><p>Audit, service planning, research, commissioning. Different rules, usually different safeguards, often requiring de-identification or separate approvals.</p></div>
+ </div>
+ <p>A very large share of "are we allowed to do this" questions become answerable the moment you establish which side of that line the activity sits on. Ask it first, every time.</p>`},
+ {h:'The legal layers', b:`<p>Three separate things apply at once, and people frequently conflate them:</p>
+ <ul>
+ <li><strong>UK GDPR and the Data Protection Act 2018</strong> — you need a lawful basis, and for health data an additional condition. Public bodies providing healthcare typically rely on public task, with the health and social care provision condition for the special category data.</li>
+ <li><strong>The common law duty of confidentiality</strong> — separate and older. Satisfying data protection law does not by itself satisfy confidentiality.</li>
+ <li><strong>The national data opt-out</strong> — patients can object to their confidential information being used beyond their own care. It does not apply to direct care.</li>
+ </ul>
+ <p>Note the practical consequence: consent is usually <em>not</em> the lawful basis an NHS trust relies on for care. Saying "the patient consented" is often the wrong answer, and saying it in an interview reveals the gap.</p>`},
+ {h:'Caldicott', b:`<p>The Caldicott Principles govern the use of confidential information. There are eight, the last added in 2020, and the ones that come up most in practice are:</p>
+ <ul>
+ <li>Justify the purpose for using confidential information.</li>
+ <li>Use it only when necessary.</li>
+ <li>Use the minimum necessary.</li>
+ <li>Access on a strict need-to-know basis.</li>
+ <li>Everyone must understand their responsibilities.</li>
+ <li>Comply with the law.</li>
+ <li>The duty to share can be as important as the duty to protect.</li>
+ <li>Inform patients about how their confidential information is used.</li>
+ </ul>
+ <p>Principle seven is the one to remember. IG is not a department that says no; failing to share information that should have been shared is itself a governance failure, and has caused documented harm.</p>
+ <p>Every organisation has a <strong>Caldicott Guardian</strong> — a senior person responsible for protecting confidentiality and enabling appropriate sharing. Your project may need to meet them. That is normal, not a sign of trouble.</p>`},
+ {h:'The artefacts', b:`<ul>
+ <li><strong>DPIA</strong> — a data protection impact assessment, required where processing is likely to be high risk. New systems handling health data essentially always need one. Start it early; it is a design tool, not a form to complete afterwards.</li>
+ <li><strong>Data Security and Protection Toolkit</strong> — the annual assurance organisations complete against national standards.</li>
+ <li><strong>SIRO</strong> — Senior Information Risk Owner, accountable at board level for information risk.</li>
+ <li><strong>Records management</strong> — the national code of practice sets retention periods. Digital records are still records.</li>
+ </ul>`},
+ {h:'The shadow IT trap', b:`<div class="warn"><span class="lbl">Be careful here</span>The behaviour that most often ends a clinician's digital career before it starts is building something genuinely useful outside governance. Patient-identifiable data in a personal spreadsheet, a photo of an access site on a personal phone, a group chat used for handover, a hosted app holding real data.</div>
+ <p>Building your own tools is a real asset — it demonstrates capability that most nursing applicants do not have. But there is a hard line, and it is simple:</p>
+ <p><strong>Anything you build outside trust infrastructure contains no patient-identifiable data. None. Not one field.</strong></p>
+ <p>Templates, calculators, reference tools, training aids, planning tools, synthetic demonstration data — all fine, and all demonstrable in an interview. Real patient data belongs in trust systems under trust governance, always. If you want your tool to hold real data, the route is through your IG team and a DPIA, not around them.</p>`}
+],
+quiz:[
+ {q:'An NHS trust processes patient data to deliver care. What is the usual lawful basis?',
+  o:['Consent','Public task, with a health and social care condition for the special category data','Legitimate interests','Contract'],
+  a:1, w:'Public bodies delivering healthcare generally rely on public task rather than consent. Consent is difficult to rely on where there is a power imbalance and it can be withdrawn.'},
+ {q:'Which Caldicott Principle is most often forgotten?',
+  o:['Justify the purpose','Use the minimum necessary','The duty to share can be as important as the duty to protect','Comply with the law'],
+  a:2, w:'IG is frequently treated as purely restrictive. Failure to share appropriately is a governance failure in its own right and has caused real harm.'},
+ {q:'You build a useful tracking tool on your own device to help the unit. What is the hard rule?',
+  o:['Tell your line manager afterwards','It must contain no patient-identifiable data at all unless routed through IG and a DPIA','Anonymise names but keep NHS numbers','It is fine if only you use it'],
+  a:1, w:'NHS numbers are identifiers. Personal builds can hold templates, calculators and synthetic data; real patient data belongs in governed trust systems.'}
+]
+},
+
+{
+id:'m7', limb:'tech', mins:12,
+title:'Data literacy that survives contact with a board',
+blurb:'Quality dimensions, denominators, and why your run chart is probably lying to you.',
+lede:'You will be handed numbers and asked what they mean. This module is about not being fooled, and about not accidentally fooling anyone else.',
+secs:[
+ {h:'Structured, semi-structured, free text', b:`<p><strong>Structured</strong> data has a defined type, unit and permitted values: a coded concept, a number with units, a timestamp. It can be counted without anyone reading it.</p>
+ <p><strong>Free text</strong> is meaningful to a human reader and, at scale, invisible. The clinical detail may be excellent and it will still not appear in any report.</p>
+ <p>The design tension is real and you should say so out loud: structure enables counting but constrains expression. The skill is deciding, field by field, which matters more — not defaulting to one.</p>`},
+ {h:'The six dimensions', b:`<p>A standard vocabulary for data quality, and worth using because it turns a vague complaint into a specific one:</p>
+ <ul>
+ <li><strong>Completeness</strong> — is it there?</li>
+ <li><strong>Accuracy</strong> — does it match reality?</li>
+ <li><strong>Timeliness</strong> — was it recorded close enough to the event?</li>
+ <li><strong>Validity</strong> — is it in the permitted format and range?</li>
+ <li><strong>Consistency</strong> — does it agree with itself across systems?</li>
+ <li><strong>Uniqueness</strong> — is anything duplicated?</li>
+ </ul>
+ <p>Note that valid and accurate are different. A weight of 70 kg is valid whether or not the patient weighs 70 kg. Validation rules catch impossible data, never wrong data — a distinction worth making in any design meeting where someone proposes validation as a quality strategy.</p>`},
+ {h:'Denominators', b:`<p>Compliance percentages are the most frequently mangled numbers in clinical audit, and almost always because of the denominator.</p>
+ <p>Say your rounding compliance is 94%. Ninety-four per cent of what?</p>
+ <ul>
+ <li>Rounds documented, over rounds documented as due? Circular — this can only ever be high.</li>
+ <li>Rounds documented, over rounds that should have occurred given session length? Meaningful, and requires knowing the schedule.</li>
+ <li>Patients with any rounding record, over patients dialysed? Tells you almost nothing about intervals.</li>
+ </ul>
+ <div class="note"><span class="lbl">Use it</span>Whenever someone quotes a percentage, ask what is on the bottom. It is a quiet question that repeatedly turns out to be the most important one in the room, and asking it is a Band 8a behaviour.</div>`},
+ {h:'Statistical process control', b:`<p>NHS improvement work leans heavily on SPC rather than comparing this month to last month. The core idea is that every process varies, and the question is whether a change is ordinary variation or something real.</p>
+ <ul>
+ <li><strong>Common cause variation</strong> — the normal noise of a stable process. Reacting to it wastes effort and can make things worse.</li>
+ <li><strong>Special cause variation</strong> — a signal that something genuinely changed. Worth investigating.</li>
+ </ul>
+ <p>An SPC chart plots data over time with a mean and control limits, and applies rules to detect signals — a point beyond the limits, a run of points on one side of the mean, a sustained trend.</p>
+ <p>Practically: two-point comparisons in board papers are nearly always meaningless, and saying so politely, with a chart, is one of the more useful things a digital nurse does.</p>`},
+ {h:'Presenting to people who are not you', b:`<ol>
+ <li>Lead with the decision you want, not the method.</li>
+ <li>One chart per point. If you need to explain the chart, redraw it.</li>
+ <li>Always show the denominator on the chart.</li>
+ <li>Name the data source and its limitations before someone else does.</li>
+ <li>Give the number a unit and a comparison. "Forty minutes per shift" means nothing without "out of a 12-hour shift, per nurse, across four bays".</li>
+ </ol>`}
+],
+quiz:[
+ {q:'Validation rules on a numeric field primarily protect which dimension?',
+  o:['Accuracy','Validity','Completeness','Uniqueness'],
+  a:1, w:'Validation constrains format and range. A weight of 70 kg passes validation whether or not it is the right weight — validity is not accuracy.'},
+ {q:'Rounding compliance is reported as 94%, calculated as rounds documented over rounds documented as due. The problem?',
+  o:['The sample is too small','The denominator is derived from the same documentation as the numerator, so it cannot detect rounds that were never recorded as due','94% is too high to be plausible','It should be a median'],
+  a:1, w:'A circular denominator makes the metric self-fulfilling. It should be derived independently — from session length and prescribed interval.'},
+ {q:'A monthly indicator rises from 82% to 86%. What should you say?',
+  o:['Performance has improved','A two-point comparison cannot distinguish common cause variation from a real change; plot it over time first','The target should be raised','The data is wrong'],
+  a:1, w:'Without knowing the normal range of variation, a four-point move is uninterpretable. This is the central argument for SPC over month-on-month comparison.'}
+]
+},
+
+{
+id:'m8', limb:'tech', mins:14,
+title:'The technical coding you actually need',
+blurb:'SQL, JSON, APIs and low-code — and an honest account of where the line is.',
+lede:'You do not need to become a software engineer. You need to read what engineers write, build small things safely, and know precisely when to stop.',
+secs:[
+ {h:'SQL is the one worth learning properly', b:`<p>If you learn one technical language, make it SQL. It is how every clinical database is questioned, it is readable almost immediately, and it converts you from someone who requests reports into someone who can specify them precisely — and often check them.</p>
+ <p>Six keywords carry most of the work:</p>
+ <div class="code"><span class="k">SELECT</span>   patient_id, session_date, <span class="k">COUNT</span>(*) <span class="k">AS</span> rounds
+<span class="k">FROM</span>     rounding_entry r
+<span class="k">JOIN</span>     dialysis_session s <span class="k">ON</span> s.id = r.session_id
+<span class="k">WHERE</span>    s.session_date &gt;= <span class="s">'2026-04-01'</span>
+  <span class="k">AND</span>    s.unit = <span class="s">'LISTER-HD'</span>
+<span class="k">GROUP BY</span> patient_id, session_date
+<span class="k">HAVING</span>   <span class="k">COUNT</span>(*) &lt; 4
+<span class="k">ORDER BY</span> session_date <span class="k">DESC</span>;</div>
+ <p>Read it as a sentence: pick these columns, from these tables joined on a shared key, filtered to these rows, grouped so we count per patient per session, keeping only groups with fewer than four rounds, newest first.</p>
+ <p>The one trap worth knowing early: <span class="mono">WHERE</span> filters individual rows before grouping, <span class="mono">HAVING</span> filters groups after. Getting those the wrong way round produces confidently wrong numbers.</p>`},
+ {h:'JSON and APIs', b:`<p>JSON is how systems exchange structured data now, and you have already seen it in the FHIR module. It is nested keys and values — objects in braces, lists in brackets. That is genuinely most of it.</p>
+ <p>An API is a defined way for one system to ask another for something. The vocabulary:</p>
+ <ul>
+ <li><strong>GET</strong> retrieves, <strong>POST</strong> creates, <strong>PUT</strong> replaces, <strong>DELETE</strong> removes.</li>
+ <li><strong>Endpoint</strong> — the address you call.</li>
+ <li><strong>Authentication</strong> — proving who is calling. Never optional for clinical data.</li>
+ <li><strong>200</strong> means it worked, <strong>401</strong> or <strong>403</strong> means you are not allowed, <strong>404</strong> means it does not exist, <strong>500</strong> means their end broke.</li>
+ </ul>
+ <p>Knowing that a 401 is a credentials problem and a 500 is not your fault saves entire meetings.</p>`},
+ {h:'Where the real quick wins live', b:`<p>In a Microsoft 365 trust, the highest-value technical skill for a digital nurse is usually not programming. It is the low-code layer, because it is already licensed, already governed, and already inside the security boundary.</p>
+ <ul>
+ <li><strong>Forms</strong> — structured capture in minutes, ideal for audits and staff feedback.</li>
+ <li><strong>Lists</strong> — a governed, permissioned, auditable alternative to the shared spreadsheet.</li>
+ <li><strong>Power Automate</strong> — reminders, approvals, routing, escalations. Enormous amounts of nursing admin time live here.</li>
+ <li><strong>Power BI</strong> — dashboards your matron will actually open.</li>
+ <li><strong>Power Apps</strong> — a proper interface over a List when a form is not enough.</li>
+ </ul>
+ <div class="note"><span class="lbl">Career note</span>"I moved our competency tracking off a shared spreadsheet into a permissioned List with automated expiry reminders" is a stronger interview answer than a personal app, because it demonstrates the same capability <em>inside</em> governance. It is also faster to build. Confirm with your IT team what is approved for your data before you start.</div>`},
+ {h:'What you already have', b:`<p>Building single-file web apps is a genuine asset, and rarer among nursing applicants than you might assume. Two things convert it from a hobby into evidence:</p>
+ <ul>
+ <li><strong>Version control.</strong> If you are already deploying from a repository you have most of this. Being able to say "every change is versioned and I can show what changed and when" is the difference between a hobbyist and someone who could be trusted near a clinical system.</li>
+ <li><strong>Frame it as prototyping, not production.</strong> The value is that you can build a working thing in an afternoon and put it in front of staff, so requirements get tested before anyone spends money. That is a recognised discipline with a name and it is a strength.</li>
+ </ul>`},
+ {h:'Where to stop', b:`<div class="warn"><span class="lbl">The line</span>Do not build or maintain anything that holds real patient data, makes or supports a clinical decision, becomes the only copy of a record, or that the unit would be stuck without if you left.</div>
+ <p>The last one is the test people forget. A tool that only you can maintain is an organisational risk with your name on it, however good it is. Mature judgement is knowing when the right answer is "this needs to be a proper system, here is the specification I have already written and validated with a prototype".</p>
+ <p>Saying that in an interview — that you know where your own building should stop — is more impressive than any app.</p>`}
+],
+quiz:[
+ {q:'In SQL, what is the difference between WHERE and HAVING?',
+  o:['No difference','WHERE filters rows before grouping; HAVING filters groups after aggregation','HAVING is faster','WHERE only works on text'],
+  a:1, w:'Confusing them produces confidently wrong aggregate numbers, which is worse than an error message.'},
+ {q:'An API call returns 401. What has happened?',
+  o:['The server crashed','Authentication failed — the credentials were missing, wrong or expired','The record does not exist','The request succeeded'],
+  a:1, w:'401 is unauthorised. 404 is not found, 500 is a server-side failure, 200 is success.'},
+ {q:'Which demonstrates the most mature judgement in an 8a interview?',
+  o:['Showing an app you built that holds unit data','Explaining that you prototyped to test requirements, then specified it as a proper governed system rather than maintaining it yourself','Saying you can code in several languages','Offering to build the trust a replacement system'],
+  a:1, w:'Knowing where your own building should stop — and why a single-maintainer tool is an organisational risk — is exactly the judgement the band is testing for.'}
+]
+},
+
+{
+id:'m9', limb:'tech', mins:11,
+title:'Making change actually stick',
+blurb:'Benefits, business cases, and why go-live is the beginning.',
+lede:'Digital projects rarely fail technically. They fail because nobody planned for the six months after the system was switched on.',
+secs:[
+ {h:'Deployment is not transformation', b:`<p>Installing a system changes what is possible. It does not change what people do. The gap between the two is where almost all disappointment lives, and it is filled by workflow redesign, training, floorwalking, iteration and leadership attention — not by more software.</p>
+ <p>The corollary is that the most valuable phase is <strong>optimisation</strong>, the period after go-live when you find out what people are actually doing and fix it. It is also the phase that gets cut first when a programme runs late.</p>`},
+ {h:'Benefits, stated properly', b:`<p>A benefit is not "improved documentation". It is a measurable change, attributed to a specific mechanism, with a baseline and an owner.</p>
+ <div class="pair">
+ <div class="a"><h3>Weak</h3><p>Digitising rounding will improve compliance and save nursing time.</p></div>
+ <div class="b"><h3>Usable</h3><p>Baseline: rounding interval compliance measured over four weeks. Mechanism: timestamped capture at the chair removes retrospective reconstruction. Target and measurement point stated. Owner named. Time released quantified per shift and stated as reinvested in direct care, not as a saving.</p></div>
+ </div>
+ <div class="warn"><span class="lbl">Careful</span>Be very deliberate about time savings. Once "saves 40 minutes per shift" enters a finance conversation it can become an establishment reduction. If the intent is quality, say the time is reinvested in direct care and name what it enables.</div>`},
+ {h:'The business case', b:`<p>NHS business cases follow a five-case structure, and knowing the names lets you contribute rather than watch:</p>
+ <ul>
+ <li><strong>Strategic</strong> — why this, why now, and how it fits national and trust priorities.</li>
+ <li><strong>Economic</strong> — options appraised, including doing nothing, with costs and benefits.</li>
+ <li><strong>Commercial</strong> — can it be procured, and how.</li>
+ <li><strong>Financial</strong> — affordability, and where the money comes from.</li>
+ <li><strong>Management</strong> — can we actually deliver it, with what governance and plan.</li>
+ </ul>
+ <p>Cases are staged, from strategic outline through outline to full. Most clinician-initiated ideas die in the economic case because nobody appraised the do-nothing option honestly.</p>`},
+ {h:'Improvement method', b:`<p>Whatever method your trust uses, the shape is the same: understand the current state before changing it, test small, measure, iterate.</p>
+ <ul>
+ <li><strong>Process mapping</strong> — walk the real workflow with the people who do it. Almost always reveals steps nobody documented.</li>
+ <li><strong>Driver diagram</strong> — links the aim to primary drivers, secondary drivers and change ideas. Useful for showing why your intervention should work.</li>
+ <li><strong>PDSA</strong> — small, fast test cycles rather than a single large launch.</li>
+ <li><strong>Measurement</strong> — outcome, process and balancing measures. The balancing measure is the one people skip and the one that matters, because it asks what your improvement might be quietly breaking.</li>
+ </ul>
+ <div class="note"><span class="lbl">At the chair</span>For digital rounding, a good balancing measure is time spent at the chair looking at a screen rather than at the patient. If digitisation improves your compliance number while reducing actual observation, you have made the record better and the care worse. Measuring that deliberately is what separates a QI project from a documentation project.</div>`},
+ {h:'People', b:`<ul>
+ <li><strong>Super-users</strong> — identify them early, train them deeply, name them publicly, and protect their time. A confident colleague on the floor outperforms a help desk.</li>
+ <li><strong>Floorwalking</strong> — presence at go-live, in the bay, at the times staff are actually working. Night shifts included.</li>
+ <li><strong>Resistance is information.</strong> Staff who object are usually describing a real workflow problem in emotional language. Translate rather than dismiss.</li>
+ <li><strong>Feedback loop</strong> — if people report problems and nothing visibly changes, they stop reporting. Close the loop out loud.</li>
+ </ul>`}
+],
+quiz:[
+ {q:'Which is a properly stated benefit?',
+  o:['Improved documentation quality','Rounding interval compliance measured against baseline, with a named owner, attributed to timestamped capture removing retrospective entry','Staff satisfaction will increase','The unit will be paperless'],
+  a:1, w:'A benefit needs a baseline, a mechanism, a measurement point and an owner. Without those it cannot be tracked or defended.'},
+ {q:'Why is a balancing measure important in a digital rounding project?',
+  o:['It is required by the business case','It detects harm caused by the improvement itself — such as attention shifting from the patient to the screen','It measures cost','It replaces the outcome measure'],
+  a:1, w:'Improving the record while degrading observation is a real risk. Measuring it deliberately is what makes this quality improvement rather than documentation change.'},
+ {q:'Most clinician-initiated business cases fail in which case?',
+  o:['Strategic','Economic — the do-nothing option was not appraised honestly','Commercial','Management'],
+  a:1, w:'Enthusiasts tend to under-state the counterfactual. A credible economic case takes doing nothing seriously as an option.'}
+]
+},
+
+{
+id:'m10', limb:'clin', mins:10,
+title:'Getting to Band 8a',
+blurb:'Credentials worth having, evidence worth keeping, and how to read the advert.',
+lede:'Nobody is going to hand you this transition. It is assembled deliberately from things you are already doing, described in the right language.',
+secs:[
+ {h:'Credentials that carry weight', b:`<ul>
+ <li><strong>FEDIP registration</strong> — the professional register for digital health and care, accessible through member bodies including BCS, with levels from Associate upwards. Professional registration is increasingly expected for NHS digital roles, and having it while still clinically based is a clear signal of intent.</li>
+ <li><strong>Clinical safety training</strong> — short, concrete, and the direct route to Clinical Safety Officer. Highest return on time of anything on this list.</li>
+ <li><strong>NHS Digital Academy</strong> — the flagship digital health leadership programme. Competitive, substantial, and well recognised.</li>
+ <li><strong>Topol Digital Fellowship</strong> — protected time for clinicians leading digital change.</li>
+ <li><strong>Networks</strong> — the Shuri Network for women of colour in health tech, and the digital nurse networks that run through NHS England and professional bodies. Networks are how these roles are actually found.</li>
+ </ul>
+ <p>Check current entry routes and cohort timings directly, as programmes and eligibility change year to year.</p>`},
+ {h:'Reading the advert properly', b:`<p>Band 8a informatics adverts use a consistent vocabulary. Translated:</p>
+ <ul>
+ <li>"Clinical digital leadership" — can you get other clinicians to change what they do, without managing them.</li>
+ <li>"Stakeholder engagement" — can you sit with suppliers, IT, governance and matrons and hold the clinical position.</li>
+ <li>"Optimisation and benefits realisation" — do you know that go-live is the start.</li>
+ <li>"Clinical safety" — do you know what DCB0160 is, ideally with evidence.</li>
+ <li>"Data quality" — can you find the denominator problem.</li>
+ <li>"Configuration and design" — have you specified something, not just used it.</li>
+ </ul>
+ <p>Map your evidence to those six phrases before you write a supporting statement. If a phrase has no evidence behind it, that is your development plan for the next three months.</p>`},
+ {h:'What counts as evidence', b:`<p>The strongest portfolio is not a list of activities. It is a small number of artefacts that could be handed to a panel, each with a story about a judgement you made.</p>
+ <ul>
+ <li>A field specification you wrote, with the coded-versus-free-text decisions defended.</li>
+ <li>A hazard log with at least one hazard you personally identified that changed the design.</li>
+ <li>A baseline audit you designed, including the denominator reasoning.</li>
+ <li>A stakeholder briefing you delivered, and what changed as a result.</li>
+ <li>A cost or benefit analysis with the do-nothing option honestly appraised.</li>
+ <li>Evidence of teaching others — the educator background is an asset here, not a sideline.</li>
+ </ul>
+ <div class="note"><span class="lbl">The framing that works</span>Panels remember judgement, not volume. One story where you spotted something nobody else did, said so, and changed a decision beats a comprehensive list of everything you produced. Choose three such stories and know them cold.</div>`},
+ {h:'Interview shapes to prepare', b:`<ol>
+ <li>Tell us about a digital change you led. <em>Structure it around a decision, not a chronology.</em></li>
+ <li>How would you handle a clinician who refuses to use a new system? <em>Resistance is information — say so.</em></li>
+ <li>How do you ensure a new system is safe? <em>DCB0160, hazard log, and one concrete hazard.</em></li>
+ <li>A report shows compliance has fallen. What do you do? <em>Ask what changed in the data before assuming something changed in the care.</em></li>
+ <li>How would you balance clinical need against technical constraint? <em>Show you understand the constraint is usually real.</em></li>
+ <li>What would you do in your first ninety days? <em>Listen, map, find one visible quick win, and do not reorganise anything.</em></li>
+ </ol>`},
+ {h:'The honest bit', b:`<p>The transition is usually not a single leap. Most people arrive via a secondment, a project role, a safety officer appointment, or an 8a post that was written with a clinician in mind and attracted three analysts who could not answer the clinical questions.</p>
+ <p>Which means the highest-value thing you can do is be visibly the nurse who understands this, inside your own organisation, before a post exists. Sit on the digital group. Volunteer for the safety work nobody wants. Be the person the informatics team asks when they need to know what actually happens at the chair.</p>
+ <p>That is how these roles get filled far more often than through an open advert.</p>`}
+],
+quiz:[
+ {q:'Which credential most directly opens a role that non-clinicians cannot hold?',
+  o:['A data analytics course','Clinical safety training leading to Clinical Safety Officer','A project management qualification','A postgraduate certificate in IT'],
+  a:1, w:'The CSO role requires current clinical registration. It is a structural advantage no technologist can compete for.'},
+ {q:'A panel asks how you would handle a clinician refusing to use a new system. Best framing?',
+  o:['Escalate to their line manager','Treat the resistance as information about a real workflow problem, find out what it is, and feed it back into design','Provide additional mandatory training','Point to the trust policy'],
+  a:1, w:'Objection usually encodes a genuine design or workflow problem in emotional language. Translating rather than overriding is the informatics skill being tested.'},
+ {q:'A report shows rounding compliance has fallen sharply this month. First move?',
+  o:['Brief the ward managers','Establish whether something changed in the data — extract, definition, denominator or system — before concluding something changed in the care','Increase audit frequency','Raise a datix'],
+  a:1, w:'Sudden step changes in an indicator are more often artefacts of definitions or extracts than genuine shifts in practice. Checking first is a Band 8a instinct.'}
+]
+},
+];
+
+/* ============================================================ GLOSSARY ============================================================ */
+const GLOSSARY = [
+['ADT','Admission, Discharge, Transfer','The HL7 v2 message family carrying patient movements and demographic updates. The backbone of most hospital interfaces.'],
+['API','Application Programming Interface','A defined way for one system to request something from another. Modern healthcare APIs usually exchange JSON over HTTPS.'],
+['Caldicott Guardian','','Senior person in an organisation responsible for protecting patient confidentiality and enabling appropriate information sharing.'],
+['Caldicott Principles','','Eight principles governing the use of confidential patient information, including that the duty to share can be as important as the duty to protect.'],
+['CCIO','Chief Clinical Information Officer','The medical counterpart to the CNIO, leading clinical input into digital strategy.'],
+['CDS','Commissioning Data Set','The national standard data set through which providers submit activity data for secondary uses.'],
+['CIO','Chief Information Officer','Executive lead for the organisation\u2019s technology function.'],
+['CNIO','Chief Nursing Information Officer','Senior nursing lead for digital, bridging clinical practice and technology strategy.'],
+['Common cause variation','','The ordinary noise of a stable process. Reacting to it as though it were a signal wastes effort and can destabilise the process.'],
+['CSO','Clinical Safety Officer','Named, clinically registered individual responsible for clinical risk management of health IT in a deploying organisation. Required under DCB0160.'],
+['CTV3','Clinical Terms Version 3','A Read code variant, now deprecated in favour of SNOMED CT but still present in historical records.'],
+['DCB0129','','Information standard placing clinical risk management duties on manufacturers of health IT.'],
+['DCB0160','','Information standard placing clinical risk management duties on health organisations deploying and using health IT.'],
+['dm+d','Dictionary of Medicines and Devices','The NHS standard for unambiguously identifying medicines and medical devices. Underpins electronic prescribing.'],
+['DPIA','Data Protection Impact Assessment','Required where processing is likely to result in high risk. Best used as a design tool early, not paperwork afterwards.'],
+['DSPT','Data Security and Protection Toolkit','Annual assurance organisations complete against national data security standards.'],
+['DTAC','Digital Technology Assessment Criteria','Baseline criteria used when assessing digital products for NHS use. Procurement-facing, distinct from DCB0160 duties.'],
+['EPR','Electronic Patient Record','The organisation\u2019s core clinical record system.'],
+['FEDIP','Federation for Informatics Professionals','Holds the national professional register for digital health and care professionals, accessible through member bodies including BCS.'],
+['FHIR','Fast Healthcare Interoperability Resources','The modern interoperability standard, modelling healthcare as resources exchanged over web APIs. Profiled for the UK as UK Core.'],
+['Free text','','Unstructured narrative. Meaningful to a reader, invisible to a report.'],
+['Frontline Digitisation','','National programme driving trusts towards a functioning electronic patient record and minimum digital capability.'],
+['GIRFT','Getting It Right First Time','National programme using data to reduce unwarranted variation between services.'],
+['GP Connect','','Service enabling access to GP record data from other care settings.'],
+['Hazard log','','Working register of identified clinical hazards, causes, effects, controls, risk ratings and owners. Core DCB0160 artefact.'],
+['HL7 v2','','Long-established pipe-delimited messaging standard. Not elegant, still carrying most NHS interfaces.'],
+['ICD-10','International Classification of Diseases, 10th revision','WHO diagnostic classification, mandated in the NHS, applied by clinical coders after the episode of care.'],
+['ICD-11','','The current WHO revision. The UK has been planning transition; ICD-10 remains the mandated classification \u2014 verify current position.'],
+['Information standard','','A standard published under the Health and Social Care Act 2012 that relevant organisations must have regard to. DCB0129 and DCB0160 are examples.'],
+['JSON','JavaScript Object Notation','Lightweight structured data format of nested keys and values. What FHIR and most modern APIs exchange.'],
+['Kt/V','','Dimensionless measure of dialysis adequacy. A computable value with defined units, not free text.'],
+['MESH','Message Exchange for Social care and Health','National service for bulk and file-based data transfer between organisations.'],
+['MHRA','','UK regulator for medicines and medical devices, including software that has a medical purpose.'],
+['National data opt-out','','Mechanism by which patients can object to their confidential information being used beyond their own direct care.'],
+['NHS number','','The primary patient identifier in England. Identity errors here cause a large share of downstream data quality problems.'],
+['ODS code','Organisation Data Service code','Standard identifier for NHS organisations and departments. Used in every national submission.'],
+['OPCS-4','','UK classification of procedures and interventions, applied alongside ICD-10 by clinical coders.'],
+['ORU','Observation Result Unsolicited','The HL7 v2 message type carrying results, most commonly from laboratory systems.'],
+['PatientView','','Service giving kidney patients access to their own results and correspondence. Uptake and usage are renal quality dashboard indicators.'],
+['PDS','Personal Demographics Service','National source of patient demographic data, accessed via the Spine.'],
+['PDSA','Plan, Do, Study, Act','Small, fast improvement test cycles rather than a single large launch.'],
+['Post-coordination','','Combining SNOMED CT concepts to express meaning that no single concept covers.'],
+['RaDaR','National Registry of Rare Kidney Diseases','Consent-based registry supporting rare kidney disease research.'],
+['Read codes','','Legacy primary care terminology, deprecated in favour of SNOMED CT but embedded in decades of historical records.'],
+['Refset','Reference set','A curated subset of SNOMED CT concepts for a defined purpose. The practical unit you will commission for a form.'],
+['SIRO','Senior Information Risk Owner','Board-level accountability for information risk.'],
+['SNOMED CT','','The mandated clinical terminology for recording care at the point of delivery in NHS records. UK Edition released by NHS England.'],
+['SPC','Statistical Process Control','Charting data over time with a mean and control limits to distinguish real change from ordinary variation.'],
+['Special cause variation','','A signal that something has genuinely changed in a process, as opposed to ordinary noise. Worth investigating.'],
+['Spine','','National infrastructure connecting NHS systems, including access to PDS.'],
+['SQL','Structured Query Language','How relational databases are questioned. The single most useful technical language for a digital nurse.'],
+['Structured data','','Data with a defined type, unit and permitted values, countable without a human reading it.'],
+['Super-user','','Frontline colleague trained in depth to support peers with a clinical system. Consistently outperforms a central help desk.'],
+['UK Core','','UK profiles of FHIR, constraining the international standard for use here.'],
+['UKKA','UK Kidney Association','Professional body for the UK kidney community, formed from the merger of the British Renal Society and the Renal Association.'],
+['UKRDC','UK Renal Data Collaboration','Infrastructure supporting more frequent, ultimately daily, flow of renal data from centres.'],
+['UKRR','UK Renal Registry','Collects longitudinal kidney data for audit, quality improvement and research, and publishes centre-level completeness.'],
+['URR','Urea Reduction Ratio','Measure of dialysis adequacy derived from pre and post urea values.'],
+['What Good Looks Like','','NHS England framework describing digital maturity across a set of success measures. Frequently referenced in business cases.']
+];
+
+/* ============================================================ PATHWAY ============================================================ */
+const RUNGS = [
+ ['\u2014','Digital champion / super-user','A clinical post with digital responsibilities attached. Usually unbanded additional duties, and the most common entry point.'],
+ ['6','Digital nurse / clinical systems trainer','Training, floorwalking, go-live support, testing build against real workflow.', true],
+ ['7\u20138a','Nursing information officer / digital nurse lead / CSO','Owns configuration decisions, clinical safety cases, benefits and the nursing voice in design. The target.'],
+ ['8b\u20138c','Deputy CNIO','Programme level, multiple systems, strategy input.'],
+ ['8d+','CNIO','Sets the clinical digital agenda alongside the CCIO and CIO. Sometimes board-adjacent.']
+];
+
+const EVIDENCE = [
+ ['Field specification with coding decisions defended','Which fields are coded, which are numeric with units, which stay free text \u2014 and why.'],
+ ['Hazard log naming a hazard you found','One hazard you personally identified that changed the design beats a complete log you compiled.'],
+ ['Baseline audit with defensible denominators','Shows you can measure honestly before you change anything.'],
+ ['Stakeholder briefing and what changed after it','Evidence of influence, not just communication.'],
+ ['Cost or benefit analysis with do-nothing appraised','Where most clinician-led cases fall over.'],
+ ['Clinical safety training / CSO route','The credential non-clinicians cannot compete for.'],
+ ['FEDIP registration','Professional registration while still clinically based signals intent clearly.'],
+ ['Something built inside governance','A permissioned List with automated reminders reads stronger than a personal app.'],
+ ['Evidence of teaching others','An educator background is an asset in this field, not a sideline.']
+];
+
+
+MODULES.push({
+id:'m11', limb:'teach', mins:13,
+title:'Teaching this to clinical staff',
+blurb:'How to explain coding to people who did not ask, and make it land.',
+lede:'You already teach. The difficulty is that this material has no blood in it, so you have to supply the stakes yourself in the first two minutes.',
+secs:[
+ {h:'Why these sessions usually fail', b:`<p>Digital teaching for clinical staff fails in predictable ways, and none of them are about the content being hard.</p>
+ <ul>
+ <li><strong>It opens with an acronym.</strong> The room decides in ninety seconds whether this is for them. An acronym in the first slide answers no.</li>
+ <li><strong>It explains the system rather than the stakes.</strong> Nobody needs to know what SNOMED is. They need to know why the thing they carefully wrote never appeared in the audit.</li>
+ <li><strong>It is delivered by someone who has not done the job.</strong> You have an enormous advantage here and should use it explicitly in the first minute.</li>
+ <li><strong>It asks for behaviour change without showing the consequence.</strong> "Please complete this field" is compliance. "Here is what happened when this field was empty" is teaching.</li>
+ </ul>`},
+ {h:'Open with something of theirs that vanished', b:`<p>The single most effective opening is a real example from their own area where good clinical care was invisible in the data.</p>
+ <p>Pull a genuine free-text field from your own unit — with identifiers removed — where a nurse has written something thoughtful and clinically useful. Show it. Then show the report that field feeds, and the fact that the sentence appears nowhere in it.</p>
+ <div class="note"><span class="lbl">At the chair</span>A nurse writes "patient reports feeling faint on standing at end of session, sat for ten minutes, resolved" in a comments box. Excellent documentation. It contributes nothing to any measure of intradialytic hypotension anywhere in the trust. That gap, shown rather than described, does more work than twenty minutes of explanation.</div>
+ <p>The emotional content of that moment is important. It is not "you are recording wrongly". It is "your good work is being thrown away, and here is why, and here is what would keep it".</p>`},
+ {h:'One idea per session', b:`<p>The commonest mistake is scope. A single session can carry one concept properly, or five badly. Pick one:</p>
+ <ul>
+ <li>Structured data is countable; free text is not.</li>
+ <li>Terminology records care; classification counts it afterwards.</li>
+ <li>A percentage is meaningless without its denominator.</li>
+ <li>One data point is not a trend.</li>
+ <li>Identifiable data belongs in governed systems, always.</li>
+ </ul>
+ <p>Everything else in the session exists to support that one sentence. If a slide does not serve it, cut the slide.</p>`},
+ {h:'Analogies that survive contact with a ward', b:`<p>Reach for the clinical world, not the technical one. The best analogy is one they could have thought of themselves.</p>
+ <ul>
+ <li><strong>Structured versus free text</strong> — a triage category versus a description of how unwell someone looks. Both true, one countable.</li>
+ <li><strong>Terminology versus classification</strong> — the words you use at the bedside versus the discharge summary heading it ends up filed under.</li>
+ <li><strong>Silent interface failure</strong> — a tissued cannula. The pump runs, the alarm stays quiet, nothing is arriving. This one lands hard in a dialysis unit and is worth saving for the moment you need it.</li>
+ <li><strong>Validation versus accuracy</strong> — a weight of 70 kg is a plausible weight. It is not necessarily <em>this patient's</em> weight. Validation catches impossible, never wrong.</li>
+ <li><strong>Common cause variation</strong> — you would not change a patient's antihypertensives on one reading. Boards do it with monthly percentages constantly.</li>
+ </ul>`},
+ {h:'Let them be wrong safely', b:`<p>Adults learn from a corrected prediction far better than from a correct explanation. Build one moment into every session where the room commits to an answer before finding out.</p>
+ <p>The reliable version: show a compliance figure of 94%, ask whether the service is doing well, take a show of hands, then reveal the denominator. The reversal is memorable in a way that a slide defining "denominator" never is.</p>
+ <div class="note"><span class="lbl">Facilitation note</span>Only ever run the reversal against a made-up or historical number, never against a named colleague's current audit. The point is the principle, and someone in the room usually produced that report.</div>`},
+ {h:'Close with one thing to do differently', b:`<p>End every session with a single, specific, achievable behaviour — not an intention.</p>
+ <p>"Be more aware of data quality" is not it. "When you cannot record the true value, leave it blank and tell me, rather than entering the nearest option" is. It is concrete, it takes no extra time, and it generates exactly the intelligence you need to fix the form.</p>
+ <p>Then close the loop publicly. If someone reports a problem and something visibly changes, you have created a reporter for life. If nothing changes, you have taught the room that reporting is pointless — which is a lesson they will also remember.</p>`}
+],
+quiz:[
+ {q:'What is the strongest opening for a coding session with ward nurses?',
+  o:['A definition of SNOMED CT','A real, de-identified example from their own area where good clinical documentation did not reach any report','The national policy context','A quiz on acronyms'],
+  a:1, w:'Stakes before systems. Showing their own good work being lost creates the motivation that a definition cannot.'},
+ {q:'Why build a moment where the room commits to a wrong answer?',
+  o:['To test them','A corrected prediction is retained far better than a correct explanation','To fill time','To identify weaker staff'],
+  a:1, w:'It is the difference between hearing a principle and discovering it. Run it on a made-up number, never a colleague\u2019s live audit.'},
+ {q:'Which closing instruction is genuinely actionable?',
+  o:['Be more aware of data quality','Complete all fields fully','When you cannot record the true value, leave it blank and tell me rather than entering the nearest option','Attend the follow-up session'],
+  a:2, w:'It is specific, costs no time, and produces exactly the feedback needed to improve the form.'}
+]
+});
+
+/* ============================================================ TEACH ============================================================ */
+const SESSIONS = [
+{
+ dur:'45 minutes', title:'Where your writing goes',
+ who:'Registered nurses and HCAs on the unit. No prior knowledge. Works as a shift handover slot or a study half-day segment.',
+ aim:'By the end, participants can explain why structured fields are countable and free text is not, and give one example from their own practice.',
+ out:['Describe the journey a piece of nursing documentation takes after it is written','Distinguish structured from unstructured data using examples from their own unit','State one thing they will do differently when they cannot record a true value'],
+ run:[
+  ['0–5','Open with a real de-identified free-text entry from the unit that shows excellent care. Ask what it tells them.'],
+  ['5–12','Show the report that field feeds. The sentence is not in it. Sit in that silence.'],
+  ['12–20','Structured versus free text, using the triage-category analogy. Two columns on a flipchart, built by the room.'],
+  ['20–30','Activity: hand out ten fields from the unit\u2019s own documentation. In pairs, sort into countable and not countable. Argue about the ambiguous ones — that argument is the learning.'],
+  ['30–38','Where the countable ones go: unit audit, trust dashboards, the renal registry. Name real destinations, not abstractions.'],
+  ['38–43','The blank-versus-guess rule. Commit out loud.'],
+  ['43–45','What happens next, and how to tell you when a field does not fit reality.']
+ ],
+ kit:'Ten real field names on cards. One anonymised free-text example. One report the unit already receives. Flipchart.'
+},
+{
+ dur:'60 minutes', title:'Ninety-four per cent of what?',
+ who:'Anyone who produces, receives or presents audit data — band 6 and above, ward managers, matrons, quality leads.',
+ aim:'By the end, participants ask for the denominator before accepting any percentage, and can explain why two-point comparisons mislead.',
+ out:['Identify the denominator in a reported percentage and judge whether it is circular','Explain the difference between validity and accuracy','Describe why a month-on-month comparison cannot distinguish real change from ordinary variation'],
+ run:[
+  ['0–8','Show a compliance figure of 94%. Ask by show of hands whether the service is doing well. Count the hands.'],
+  ['8–18','Reveal the denominator: rounds documented, over rounds documented as due. Let the room work out why it can only ever be high.'],
+  ['18–30','Three more percentages, each with a different flaw. Pairs identify the problem. Escalating difficulty.'],
+  ['30–40','Validity versus accuracy. The 70 kg example. Why validation rules are not a quality strategy.'],
+  ['40–52','Run charts. Same data, plotted two ways: a bar comparing two months, then twelve months over time. The story reverses.'],
+  ['52–58','Their own reports: what will they ask for next time?'],
+  ['58–60','Close: one question to take to every meeting.']
+ ],
+ kit:'Four worked percentage examples. One real indicator plotted both ways. Avoid using a named colleague\u2019s live audit.'
+},
+{
+ dur:'60 minutes', title:'Spreadsheets that do not lie',
+ who:'Anyone maintaining a unit list, tracker or rota in a spreadsheet. Practical, hands-on, laptops needed.',
+ aim:'By the end, participants can build a list that stays countable, and know when a spreadsheet is the wrong tool entirely.',
+ out:['Apply one-thing-per-cell, one-row-per-record and consistent dates','Explain why merged cells and colour-coding destroy analysability','Recognise when data must move into a governed system instead'],
+ run:[
+  ['0–7','Show a real unit spreadsheet, anonymised, with the usual problems. Ask what would happen if you tried to count anything in it.'],
+  ['7–20','The four rules: one thing per cell, one row per record, one consistent date format, never store meaning only in colour.'],
+  ['20–35','Hands-on: fix a deliberately broken sheet against those rules.'],
+  ['35–45','Why colour-coding is the most common trap — it is invisible to every formula, every filter and every export.'],
+  ['45–55','The hard line: identifiable data belongs in governed systems. What a permissioned list gives you that a shared file does not — access control, audit trail, no rogue copies.'],
+  ['55–60','Where to get help locally, and who to ask before starting a new tracker.']
+ ],
+ kit:'One deliberately broken sheet. One fixed version. Your IG team\u2019s current guidance on where unit data may live — check this before you deliver, it varies.'
+}
+];
+
+const ANALOGIES = [
+ ['Structured versus free text','A triage category versus a paragraph describing how unwell someone looks.','Both are true and useful. Only one can be counted without a human reading it.'],
+ ['Terminology versus classification','The words you use at the bedside versus the heading it gets filed under in the discharge summary.','SNOMED CT is the bedside vocabulary; ICD-10 is the filing cabinet.'],
+ ['Silent interface failure','A tissued cannula. The pump is running, no alarm, nothing arriving.','Save this one. In a dialysis unit it lands harder than any technical explanation.'],
+ ['Validation versus accuracy','70 kg is a plausible weight. It is not necessarily this patient\u2019s weight.','Validation catches impossible values, never wrong ones.'],
+ ['Common cause variation','You would not change antihypertensives on a single reading.','Yet boards routinely act on one month\u2019s percentage.'],
+ ['Mandatory fields','A form that will not close is a form that will be given an answer.','Whether or not anyone knows the answer.'],
+ ['Blank versus zero','An empty observation box looks the same whether the interface failed or the obs was not due.','This is a genuine hazard, not a design preference.'],
+ ['The denominator','Ninety per cent of the patients we asked is not ninety per cent of patients.','The most useful question in any meeting.'],
+ ['Free text at scale','Writing in the margin of a form that gets shredded before anyone counts it.','Blunt, but it lands when gentler framings have not.']
+];
+
+const MYTHS = [
+ ['\u201CIf I write it in the notes, it counts.\u201D','It counts for the person reading the notes. It counts for nothing that is measured, reported or funded. Both matter — but they are not the same thing and staff are rarely told.'],
+ ['\u201CThe computer keeps it all anyway.\u201D','Systems keep what they were designed to keep, in the shape they were designed to keep it. A comment box is stored faithfully and remains unanalysable forever.'],
+ ['\u201CMandatory fields improve data quality.\u201D','They improve completeness and can degrade accuracy, because a record that will not save gets an answer regardless. Completeness and accuracy are different dimensions and can move in opposite directions.'],
+ ['\u201CSomeone checks this.\u201D','Usually nobody does, until it is used in a report months later and a discrepancy surfaces. Say so honestly — pretending otherwise loses the room.'],
+ ['\u201CAnonymised means safe to share.\u201D','Removing names is not anonymisation. A small unit, a date and an age can identify someone. Treat unit-level data as identifiable unless someone qualified has said otherwise.'],
+ ['\u201CIG will just say no.\u201D','The Caldicott Principles explicitly state that the duty to share can be as important as the duty to protect. Early involvement usually speeds a project up. Late involvement is what stops it.'],
+ ['\u201CDigital will save us time.\u201D','Sometimes. It reliably moves work rather than removing it, and go-live is usually slower than what it replaced. Promising time savings you cannot evidence will cost you the room\u2019s trust the following month.']
+];
+
+const CRAFT = [
+ ['Never open with an acronym','The room decides in ninety seconds whether this is for them.'],
+ ['Use their own data','A real de-identified example from their unit outperforms any generic slide.'],
+ ['One concept per session','A session can carry one idea properly or five badly.'],
+ ['Let them be wrong first','A corrected prediction is retained far better than a correct explanation.'],
+ ['Name the destination','"This feeds the renal registry" beats "this improves data quality".'],
+ ['Say what you do not know','Guessing at IG or safety detail in front of staff will cost you more than admitting you will check.'],
+ ['Close the loop out loud','If reporting a problem visibly changes something, you gain reporters. If not, you have taught them not to bother.']
+];
+
+/* ============================================================ SPEECH ============================================================ */
+/* Spoken text needs different phrasing from written text: code blocks
+   read aloud are noise, and several NHS acronyms are mispronounced by
+   every engine. speechify() handles both. */
+const SAY = [
+ [/\bFHIR\b/g,'Fire'], [/\bSNOMED CT\b/g,'Snomed C T'], [/\bSNOMED\b/g,'Snomed'], [/\bdm\+d\b/g,'D M plus D'],
+ [/\bKt\/V\b/g,'K T over V'], [/\bICD-1(\d)\b/g,(m,d)=>'I C D '+(d==='0'?'ten':'eleven')],
+ [/\bOPCS-4\b/g,'O P C S four'], [/\bCTV3\b/g,'C T V three'],
+ [/\bDCB0129\b/g,'D C B zero one two nine'], [/\bDCB0160\b/g,'D C B zero one six zero'],
+ [/\bHL7 v2\b/g,'H L seven, version two'], [/\bHL7\b/g,'H L seven'],
+ [/\bUK Core\b/g,'U K Core'], [/\bUKRR\b/g,'U K R R'], [/\bUKKA\b/g,'U K K A'],
+ [/\bUKRDC\b/g,'U K R D C'], [/\bRaDaR\b/g,'Radar'], [/\bURR\b/g,'U R R'],
+ [/\bSQL\b/g,'sequel'], [/\bJSON\b/g,'Jason'], [/\bAPI\b/g,'A P I'],
+ [/\bPDSA\b/g,'P D S A'], [/\bSPC\b/g,'S P C'], [/\bDPIA\b/g,'D P I A'],
+ [/\bDSPT\b/g,'D S P T'], [/\bDTAC\b/g,'D tack'], [/\bSIRO\b/g,'S I R O'],
+ [/\bMESH\b/g,'Mesh'], [/\bODS\b/g,'O D S'], [/\bPDS\b/g,'P D S'],
+ [/\bEPR\b/g,'E P R'], [/\bCNIO\b/g,'C N I O'], [/\bCCIO\b/g,'C C I O'],
+ [/\bCIO\b/g,'C I O'], [/\bCSO\b/g,'C S O'], [/\bFEDIP\b/g,'Feddip'],
+ [/\bGIRFT\b/g,'Girft'], [/\bADT\b/g,'A D T'], [/\bORU\b/g,'O R U'],
+ [/\bIG\b/g,'I G'], [/\bQI\b/g,'Q I'], [/\bGDPR\b/g,'G D P R'],
+ [/\bHCAs?\b/g,'health care assistants'], [/\bBand (\d)/g,'Band $1'],
+ [/\b8a\b/g,'eight A'], [/\b8b\b/g,'eight B'], [/\b8c\b/g,'eight C'], [/\b8d\b/g,'eight D'],
+ [/&mdash;|—/g,' — '], [/&nbsp;/g,' '], [/&gt;=/g,' at least '], [/&lt;=/g,' at most '], [/&gt;/g,' greater than '], [/&lt;/g,' less than '],
+ [/&amp;/g,' and '], [/&middot;/g,','], [/&larr;/g,''], [/&ldquo;|&rdquo;|[\u201C\u201D]/g,''],
+ [/\u2019/g,"'"], [/\u2014/g,' — ']
+];
+
+function speechify(html){
+  let t = html;
+  t = t.replace(/<div class="code">[\s\S]*?<\/div>/g, ' There is a code example on screen here. ');
+  t = t.replace(/<div class="pair">/g, ' ');
+  t = t.replace(/<h3>/g, ' ').replace(/<\/h3>/g, '. ');
+  t = t.replace(/<\/li>/g, '. ').replace(/<\/p>/g, ' ');
+  t = t.replace(/<span class="lbl">[\s\S]*?<\/span>/g, ' Note. ');
+  t = t.replace(/<[^>]+>/g, ' ');
+  SAY.forEach(([re,to]) => { t = t.replace(re, to); });
+  t = t.replace(/\s+/g,' ').replace(/\s+([.,;:])/g,'$1').replace(/\.\s*\./g,'.').trim();
+  return t;
+}
+
+function chunk(text){
+  const parts = text.match(/[^.!?]+[.!?]*\s*/g) || [text];
+  const out = []; let buf = '';
+  parts.forEach(p=>{
+    if((buf + p).length > 190 && buf){ out.push(buf.trim()); buf = p; }
+    else buf += p;
+  });
+  if(buf.trim()) out.push(buf.trim());
+  return out.filter(Boolean);
+}
+
+const P = { chunks:[], i:0, playing:false, rate:1, mod:null, voice:null, keep:null };
+const RATES = [0.9, 1, 1.15, 1.3, 1.5];
+
+function pickVoice(){
+  if(!('speechSynthesis' in window)) return;
+  const vs = speechSynthesis.getVoices();
+  if(!vs.length) return;
+  P.voice = vs.find(v=>/en-GB/i.test(v.lang) && /female|Serena|Kate|Stephanie|Martha/i.test(v.name))
+         || vs.find(v=>/en-GB/i.test(v.lang))
+         || vs.find(v=>/^en/i.test(v.lang)) || vs[0];
+}
+if('speechSynthesis' in window){
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+
+function buildQueue(m){
+  const segs = [];
+  segs.push({ label:'Introduction', text: m.title + '. ' + speechify(m.lede) });
+  m.secs.forEach((s,i)=> segs.push({ label:s.h, si:i, text: s.h + '. ' + speechify(s.b) }));
+  segs.push({ label:'End of module', text:'That is the end of ' + m.title + '. There are ' + m.quiz.length + ' questions on screen when you are ready.' });
+  const chunks = [];
+  segs.forEach((s,si)=> chunk(s.text).forEach(c=> chunks.push({ text:c, seg:si, label:s.label, si:s.si })));
+  return { segs, chunks };
+}
+
+function startListen(m){
+  if(!('speechSynthesis' in window)){
+    $('#pTip').textContent = 'This browser has no built-in speech. Try Safari or Chrome.';
+    $('#player').classList.add('on'); return;
+  }
+  speechSynthesis.cancel();
+  const q = buildQueue(m);
+  P.chunks = q.chunks; P.segs = q.segs; P.i = 0; P.mod = m; P.playing = true; P.finished = false;
+  $('#player').classList.add('on');
+  $('#pTip').textContent = 'Plays on into the next module. Keep the screen awake — iOS stops speech when the phone locks.';
+  speakCurrent();
+}
+
+function speakCurrent(){
+  if(!P.playing) return;
+  if(P.i >= P.chunks.length) return finishModule();
+  const c = P.chunks[P.i];
+  const u = new SpeechSynthesisUtterance(c.text);
+  u.rate = P.rate; u.pitch = 1; u.lang = 'en-GB';
+  if(P.voice) u.voice = P.voice;
+  u.onend = ()=>{ if(P.playing){ P.i++; speakCurrent(); } };
+  u.onerror = ()=>{ if(P.playing){ P.i++; speakCurrent(); } };
+  speechSynthesis.speak(u);
+  paintPlayer();
+  clearInterval(P.keep);
+  P.keep = setInterval(()=>{ if(P.playing) try{ speechSynthesis.resume() }catch(e){} }, 9000);
+}
+
+/* Modules run on into each other so a walk needs one tap, not eleven. */
+function finishModule(){
+  const next = MODULES[MODULES.indexOf(P.mod) + 1];
+  clearInterval(P.keep);
+  if(next){
+    $('#pTip').textContent = 'Continuing to ' + next.title + '.';
+    setTimeout(()=>{ if(P.playing){ openModule(next.id); startListen(next); } }, 1100);
+    return;
+  }
+  P.playing = false; P.finished = true;
+  $('#pTitle').textContent = 'Finished';
+  $('#pPos').textContent = 'That was the last module.';
+  $('#pBar').style.width = '100%';
+  $('#pPlay').innerHTML = '<svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>';
+  $('#pTip').textContent = 'Tap play to hear it again from the top.';
+}
+
+function paintPlayer(){
+  const c = P.chunks[P.i]; if(!c) return;
+  $('#pTitle').textContent = c.label;
+  $('#pPos').textContent = 'Part ' + (c.seg + 1) + ' of ' + P.segs.length + ' · ' + P.mod.title;
+  $('#pBar').style.width = Math.round((P.i + 1) / P.chunks.length * 100) + '%';
+  $('#pPlay').innerHTML = P.playing
+    ? '<svg viewBox="0 0 24 24"><path d="M7 4h4v16H7zM13 4h4v16h-4z"/></svg>'
+    : '<svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>';
+  document.querySelectorAll('.sec').forEach((el,i)=> el.classList.toggle('speaking', i === c.si));
+}
+
+function jumpSeg(dir){
+  if(!P.chunks.length) return;
+  const cur = P.chunks[P.i].seg;
+  const target = Math.max(0, Math.min(P.segs.length - 1, cur + dir));
+  const idx = P.chunks.findIndex(c=>c.seg === target);
+  if(idx < 0) return;
+  P.i = idx; P.playing = true;
+  speechSynthesis.cancel();
+  speakCurrent();
+}
+
+function stopListen(finished){
+  P.playing = false;
+  clearInterval(P.keep);
+  try{ speechSynthesis.cancel() }catch(e){}
+  $('#player').classList.remove('on');
+  document.querySelectorAll('.sec').forEach(el=>el.classList.remove('speaking'));
+}
+
+/* ============================================================ APP ============================================================ */
+const $ = s => document.querySelector(s);
+let limbFilter = 'all';
+
+const done = () => Store.get();
+const isDone = id => done().includes(id);
+function toggleDone(id){
+  const d = done();
+  Store.set(d.includes(id) ? d.filter(x=>x!==id) : d.concat(id));
+  paintProgress();
+}
+function paintWash(n){
+  document.body.className = 'w' + (((n - 1) % 11) + 1);
+}
+function paintProgress(){
+  const n = done().length, t = MODULES.length, pct = Math.round(n / t * 100);
+  $('#pDone').textContent = n; $('#pTotal').textContent = t;
+  $('#tubeFill').style.width = pct + '%';
+  const ticks = $('#ticks');
+  if(ticks && ticks.childElementCount !== t) ticks.innerHTML = '<i></i>'.repeat(t);
+  const list = $('#modList'); if(list) list.style.setProperty('--primed', pct + '%');
+  document.querySelectorAll('.mod').forEach(el=> el.classList.toggle('done', isDone(el.dataset.id)));
+}
+
+const LIMB_LABEL = { clin:'Meaning', tech:'Systems', teach:'Teaching' };
+
+function renderLimbs(){
+  const opts = [['all','All ' + MODULES.length],['clin','Meaning'],['tech','Systems'],['teach','Teaching']];
+  $('#limbs').innerHTML = opts.map(([v,l])=>
+    `<button class="limb" data-limb="${v}" aria-pressed="${limbFilter===v}">${l}</button>`).join('');
+  $('#limbs').querySelectorAll('.limb').forEach(b=>{
+    b.onclick = ()=>{ limbFilter = b.dataset.limb; renderLimbs(); renderList(); };
+  });
+}
+
+function renderList(){
+  const shown = MODULES.filter(m => limbFilter==='all' || m.limb===limbFilter);
+  $('#modList').innerHTML = shown.map(m=>{
+    const i = MODULES.indexOf(m) + 1;
+    return `<button class="mod w${i}" data-id="${m.id}">
+      <span class="port"></span>
+      <span class="mod-n">${String(i).padStart(2,'0')}</span>
+      <div class="mod-title">${m.title}</div>
+      <div class="blurb">${m.blurb}</div>
+      <div class="meta"><span class="tag">${LIMB_LABEL[m.limb]}</span><span>${m.mins} min</span><span>${m.quiz.length} questions</span></div>
+    </button>`;
+  }).join('');
+  $('#modList').querySelectorAll('.mod').forEach(b=> b.onclick = ()=> openModule(b.dataset.id));
+  paintProgress();
+}
+
+function openModule(id){
+  const m = MODULES.find(x=>x.id===id);
+  const n = MODULES.indexOf(m) + 1;
+  paintWash(n);
+  $('#v-read').innerHTML = `
+    <div class="topbar">
+      <button class="back" id="backBtn">&larr; Modules</button>
+      <button class="listen" id="listenBtn"><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>Listen</button>
+    </div>
+    <span class="eyebrow">Module ${String(n).padStart(2,'0')} · ${LIMB_LABEL[m.limb]} · ${m.mins} min</span>
+    <h1>${m.title}</h1>
+    <p class="lede">${m.lede}</p>
+    ${m.secs.map(s=>`<div class="sec"><h2>${s.h}</h2>${s.b}</div>`).join('')}
+    <div class="quiz">
+      <span class="eyebrow">Check yourself</span>
+      ${m.quiz.map((q,qi)=>`
+        <div class="q" data-qi="${qi}">
+          <p class="stem">${qi+1}. ${q.q}</p>
+          ${q.o.map((o,oi)=>`<button class="opt" data-oi="${oi}">${o}</button>`).join('')}
+          <p class="why" hidden></p>
+        </div>`).join('')}
+      <button class="finish ${isDone(id)?'undo':''}" id="markBtn">${isDone(id)?'Mark as not finished':'Mark module complete'}</button>
+    </div>`;
+
+  $('#backBtn').onclick = ()=>{ stopListen(); show('learn'); };
+  $('#listenBtn').onclick = ()=> startListen(m);
+
+  $('#v-read').querySelectorAll('.q').forEach(qEl=>{
+    const q = m.quiz[+qEl.dataset.qi];
+    qEl.querySelectorAll('.opt').forEach(btn=>{
+      btn.onclick = ()=>{
+        const oi = +btn.dataset.oi;
+        qEl.querySelectorAll('.opt').forEach((b,i)=>{
+          b.disabled = true;
+          if(i===q.a) b.classList.add('right'); else if(i===oi) b.classList.add('wrong');
+        });
+        const why = qEl.querySelector('.why');
+        why.textContent = q.w; why.hidden = false;
+      };
+    });
+  });
+
+  $('#markBtn').onclick = ()=>{
+    toggleDone(id);
+    const b = $('#markBtn');
+    b.classList.toggle('undo', isDone(id));
+    b.textContent = isDone(id) ? 'Mark as not finished' : 'Mark module complete';
+    if(isDone(id)) setTimeout(()=>{ stopListen(); show('learn'); }, 420);
+  };
+  show('read');
+}
+
+function renderGloss(filter=''){
+  const f = filter.trim().toLowerCase();
+  const hits = GLOSSARY.filter(([t,e,d]) =>
+    !f || t.toLowerCase().includes(f) || e.toLowerCase().includes(f) || d.toLowerCase().includes(f));
+  $('#glCount').textContent = f ? `${hits.length} of ${GLOSSARY.length} terms` : `${GLOSSARY.length} terms`;
+  $('#glList').innerHTML = hits.length
+    ? hits.map(([t,e,d])=>`<div class="gl"><dt>${t}${e?`<span class="exp">${e}</span>`:''}</dt><dd>${d}</dd></div>`).join('')
+    : `<p class="empty">Nothing matches that. Try a shorter word, or clear the search to browse all ${GLOSSARY.length}.</p>`;
+}
+
+function renderTeach(){
+  $('#v-teach').innerHTML = `
+    <div class="vtop">
+      <span class="eyebrow">Ready to run</span>
+      <h1 style="margin:7px 0 8px;font-size:1.95rem">Teach</h1>
+      <p class="lede">Three sessions you could deliver this month, plus the analogies and misconceptions that decide whether they land.</p>
+    </div>
+    ${SESSIONS.map(s=>`
+      <div class="sess">
+        <span class="dur">${s.dur}</span>
+        <h2>${s.title}</h2>
+        <p class="who">${s.who}</p>
+        <div class="out"><b>Learning outcomes</b><ul>${s.out.map(o=>`<li>${o}</li>`).join('')}</ul></div>
+        <ul class="run">${s.run.map(([t,d])=>`<li><b>${t}</b><span>${d}</span></li>`).join('')}</ul>
+        <div class="out" style="margin-top:14px"><b>You will need</b>${s.kit}</div>
+      </div>`).join('')}
+
+    <h2 style="margin:30px 0 6px">Analogy bank</h2>
+    <p style="font-size:.93rem;color:var(--ink-soft);margin-bottom:14px">Reach for the clinical world, not the technical one. The best analogy is one they could have thought of themselves.</p>
+    ${ANALOGIES.map(([t,s,n])=>`<div class="swap"><div class="t">${t}</div><div class="say">${s}</div><div class="tho">${n}</div></div>`).join('')}
+
+    <h2 style="margin:30px 0 6px">Misconceptions to pre-empt</h2>
+    <p style="font-size:.93rem;color:var(--ink-soft);margin-bottom:14px">Say these out loud before someone else thinks them quietly.</p>
+    ${MYTHS.map(([m,r])=>`<div class="swap"><div class="say" style="font-weight:500;border-left-color:#F5B4C8">${m}</div><div class="tho" style="font-style:normal;color:var(--ink-soft);font-size:.93rem;margin-top:11px">${r}</div></div>`).join('')}
+
+    <h2 style="margin:30px 0 6px">Seven rules of the room</h2>
+    <ul class="chk">${CRAFT.map(([t,s])=>`<li><b>${t}</b><span>${s}</span></li>`).join('')}</ul>
+    <div class="note" style="margin-top:24px"><span class="lbl">Before you deliver</span>
+      Check your own IG team's current position on where unit data may live, and never run the denominator reversal against a colleague's live audit. Both take five minutes and both protect the session.
+    </div>`;
+}
+
+function renderPath(){
+  $('#v-path').innerHTML = `
+    <div class="vtop">
+      <span class="eyebrow">Where this goes</span>
+      <h1 style="margin:7px 0 8px;font-size:1.95rem">Pathway</h1>
+      <p class="lede">Titles vary wildly between trusts. Read the person specification, never the job title.</p>
+    </div>
+    <div style="margin-top:22px">
+      ${RUNGS.map(([b,t,d,here])=>`<div class="rung ${here?'here':''}"><span class="band">${b}</span><div><h3>${t}</h3><p>${d}</p></div></div>`).join('')}
+    </div>
+    <h2 style="margin:30px 0 6px">Portfolio evidence</h2>
+    <p style="font-size:.93rem;color:var(--ink-soft)">A panel remembers judgement, not volume. Aim for a small set of artefacts, each attached to a decision you made and can defend.</p>
+    <ul class="chk">${EVIDENCE.map(([t,s])=>`<li><b>${t}</b><span>${s}</span></li>`).join('')}</ul>
+    <div class="note" style="margin-top:26px"><span class="lbl">The realistic route</span>
+      Most people arrive by secondment, project role or safety officer appointment rather than an open advert. Be visibly the nurse who understands this inside your own organisation, before a post exists.
+    </div>`;
+}
+
+function show(v){
+  document.querySelectorAll('.view').forEach(s=>s.classList.remove('on'));
+  $('#v-' + v).classList.add('on');
+  $('#mast').style.display = (v==='learn') ? '' : 'none';
+  if(v !== 'read') paintWash(7);
+  document.querySelectorAll('nav button').forEach(b=>{
+    if(b.dataset.go === (v==='read' ? 'learn' : v)) b.setAttribute('aria-current','page');
+    else b.removeAttribute('aria-current');
+  });
+  window.scrollTo({ top:0, behavior:'instant' });
+}
+
+document.querySelectorAll('nav button').forEach(b=> b.onclick = ()=>{ if(b.dataset.go!=='learn') stopListen(); show(b.dataset.go); });
+$('#glSearch').addEventListener('input', e => renderGloss(e.target.value));
+$('#pPlay').onclick = ()=>{
+  if(!P.chunks.length) return;
+  if(P.finished){ P.finished = false; P.i = 0; P.playing = true; speakCurrent(); return; }
+  if(P.playing){ P.playing = false; try{ speechSynthesis.pause() }catch(e){} }
+  else { P.playing = true; try{ speechSynthesis.resume() }catch(e){} if(!speechSynthesis.speaking) speakCurrent(); }
+  paintPlayer();
+};
+$('#pNext').onclick = ()=> jumpSeg(1);
+$('#pPrev').onclick = ()=> jumpSeg(-1);
+$('#pStop').onclick = ()=> stopListen();
+$('#pRate').onclick = ()=>{
+  P.rate = RATES[(RATES.indexOf(P.rate) + 1) % RATES.length];
+  $('#pRate').textContent = P.rate.toFixed(2).replace(/0$/,'').replace(/\.$/,'') + '×';
+  if(P.playing){ speechSynthesis.cancel(); speakCurrent(); }
+};
+
+try{
+  const manifest = { name:'Circuit — Digital Nurse Foundations', short_name:'Circuit', start_url:'.',
+    display:'standalone', background_color:'#FAF7FB', theme_color:'#FAF7FB',
+    icons:[{ src:'data:image/svg+xml,' + encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="34" fill="#FAF7FB"/><path d="M96 30v132" stroke="#D3B5E8" stroke-width="11" stroke-linecap="round"/><circle cx="96" cy="60" r="17" fill="none" stroke="#F5B4C8" stroke-width="10"/><circle cx="96" cy="132" r="17" fill="none" stroke="#A6D5EF" stroke-width="10"/></svg>`),
+      sizes:'192x192', type:'image/svg+xml' }] };
+  const link = document.createElement('link');
+  link.rel = 'manifest';
+  link.href = URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:'application/json'}));
+  document.head.appendChild(link);
+}catch(e){}
+
+renderLimbs(); renderList(); renderGloss(); renderTeach(); renderPath();
+
+</script>
+</body>
+</html>
