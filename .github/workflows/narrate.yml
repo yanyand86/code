@@ -1,0 +1,137 @@
+name: Narrate
+
+# Regenerates the MP3 narration whenever the content changes.
+# Modules are synthesised in parallel, but ONLY the final job writes to git —
+# a matrix of jobs all pushing to the same branch is the classic race.
+
+on:
+  workflow_dispatch:
+    inputs:
+      voice:
+        description: 'Kokoro voice'
+        default: 'bf_emma'
+        type: choice
+        options: [bf_emma, bf_isabella, bf_alice, bf_lily, bm_george, bm_lewis, bm_daniel]
+      speed:
+        description: 'Speaking rate (1.0 = normal)'
+        default: '0.95'
+  push:
+    branches: [main]
+    paths: ['index.html', 'circuit.html']
+
+concurrency:
+  group: narrate
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      ids: ${{ steps.ids.outputs.ids }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Extract narration script
+        run: node tools/build-narration.mjs
+      - id: ids
+        run: echo "ids=$(cat narration/ids.json)" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: narration-manifest
+          path: narration/
+
+  speak:
+    needs: plan
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        id: ${{ fromJSON(needs.plan.outputs.ids) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: narration-manifest
+          path: narration/
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: System deps
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq espeak-ng ffmpeg
+
+      - name: Python deps
+        run: |
+          pip install --quiet torch --index-url https://download.pytorch.org/whl/cpu
+          pip install --quiet "kokoro>=0.9.4" soundfile numpy
+
+      - name: Synthesise ${{ matrix.id }}
+        env:
+          KOKORO_VOICE: ${{ inputs.voice || 'bf_emma' }}
+          KOKORO_SPEED: ${{ inputs.speed || '0.95' }}
+        run: python tools/synth.py ${{ matrix.id }}
+
+      - name: Encode to MP3
+        run: |
+          mkdir -p dist
+          ffmpeg -loglevel error -i ${{ matrix.id }}.wav \
+                 -codec:a libmp3lame -b:a 48k -ac 1 -ar 24000 \
+                 dist/${{ matrix.id }}.mp3
+          cp ${{ matrix.id }}.json dist/
+          ls -lh dist/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: audio-${{ matrix.id }}
+          path: dist/
+          retention-days: 1
+
+  publish:
+    needs: speak
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: audio-*
+          merge-multiple: true
+          path: incoming/
+
+      - name: Assemble audio/ and the player index
+        run: |
+          mkdir -p audio
+          cp incoming/*.mp3 audio/
+          python - <<'PY'
+          import json, glob, os
+          idx = {}
+          for f in sorted(glob.glob('incoming/*.json')):
+              d = json.load(open(f))
+              idx[d['id']] = {'title': d['title'], 'duration': d['duration'],
+                              'voice': d['voice'], 'marks': d['marks']}
+          json.dump(idx, open('audio/index.json', 'w'), indent=1)
+          total = sum(v['duration'] for v in idx.values())
+          print(f"{len(idx)} modules · {total/60:.1f} minutes total")
+          PY
+          du -sh audio/
+
+      - name: Commit once
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audio/
+          if git diff --staged --quiet; then
+            echo "Narration unchanged."
+            exit 0
+          fi
+          git commit -m "Regenerate narration ($(ls audio/*.mp3 | wc -l) modules)"
+          git pull --rebase --autostash
+          git push
