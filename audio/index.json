@@ -1,0 +1,37 @@
+{
+ "m1": {
+  "title": "What the job actually is",
+  "duration": 224.85,
+  "voice": "bf_emma",
+  "marks": [
+   {
+    "label": "Introduction",
+    "t": 0.0
+   },
+   {
+    "label": "The one-sentence version",
+    "t": 12.12
+   },
+   {
+    "label": "Why a nurse and not an analyst",
+    "t": 34.5
+   },
+   {
+    "label": "The rungs",
+    "t": 80.88
+   },
+   {
+    "label": "The frameworks people will name-drop",
+    "t": 147.5
+   },
+   {
+    "label": "What actually gets you the interview",
+    "t": 198.47
+   },
+   {
+    "label": "End of module",
+    "t": 218.82
+   }
+  ]
+ }
+}
