@@ -1,7 +1,7 @@
 name: Narrate
 
 # Regenerates the MP3 narration whenever the content changes.
-# Modules are synthesised in parallel, but ONLY the final job writes to git —
+# Modules synthesise in parallel, but ONLY the final job writes to git —
 # a matrix of jobs all pushing to the same branch is the classic race.
 
 on:
@@ -15,6 +15,9 @@ on:
       speed:
         description: 'Speaking rate (1.0 = normal)'
         default: '0.95'
+      only:
+        description: 'Single module to test, e.g. m1. Leave blank for all.'
+        default: ''
   push:
     branches: [main]
     paths: ['index.html', 'circuit.html']
@@ -39,7 +42,12 @@ jobs:
       - name: Extract narration script
         run: node tools/build-narration.mjs
       - id: ids
-        run: echo "ids=$(cat narration/ids.json)" >> "$GITHUB_OUTPUT"
+        run: |
+          if [ -n "${{ inputs.only }}" ]; then
+            echo "ids=[\"${{ inputs.only }}\"]" >> "$GITHUB_OUTPUT"
+          else
+            echo "ids=$(cat narration/ids.json)" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: narration-manifest
@@ -48,6 +56,7 @@ jobs:
   speak:
     needs: plan
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       max-parallel: 6
@@ -60,18 +69,21 @@ jobs:
           name: narration-manifest
           path: narration/
 
+      # No pip cache here on purpose: setup-python's cache needs a
+      # requirements.txt or pyproject.toml to hash, and this repo has neither.
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-          cache: pip
+          python-version: '3.11'
 
       - name: System deps
         run: sudo apt-get update -qq && sudo apt-get install -y -qq espeak-ng ffmpeg
 
       - name: Python deps
         run: |
-          pip install --quiet torch --index-url https://download.pytorch.org/whl/cpu
-          pip install --quiet "kokoro>=0.9.4" soundfile numpy
+          python -m pip install --upgrade pip
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install "kokoro>=0.9.4" soundfile "numpy<2"
+          python -c "import torch, kokoro, soundfile, numpy; print('torch', torch.__version__, '| numpy', numpy.__version__)"
 
       - name: Synthesise ${{ matrix.id }}
         env:
@@ -112,14 +124,18 @@ jobs:
           cp incoming/*.mp3 audio/
           python - <<'PY'
           import json, glob, os
+          # merge into any existing index so a single-module test run
+          # does not wipe the other ten entries
           idx = {}
+          if os.path.exists('audio/index.json'):
+              idx = json.load(open('audio/index.json'))
           for f in sorted(glob.glob('incoming/*.json')):
               d = json.load(open(f))
               idx[d['id']] = {'title': d['title'], 'duration': d['duration'],
                               'voice': d['voice'], 'marks': d['marks']}
           json.dump(idx, open('audio/index.json', 'w'), indent=1)
           total = sum(v['duration'] for v in idx.values())
-          print(f"{len(idx)} modules · {total/60:.1f} minutes total")
+          print(f"{len(idx)} modules in index · {total/60:.1f} minutes total")
           PY
           du -sh audio/
 
