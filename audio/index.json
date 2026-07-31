@@ -33,5 +33,359 @@
     "t": 218.82
    }
   ]
+ },
+ "m10": {
+  "title": "Getting to Band 8a",
+  "duration": 253.62,
+  "voice": "bf_emma",
+  "marks": [
+   {
+    "label": "Introduction",
+    "t": 0.0
+   },
+   {
+    "label": "Credentials that carry weight",
+    "t": 11.5
+   },
+   {
+    "label": "Reading the advert properly",
+    "t": 70.65
+   },
+   {
+    "label": "What counts as evidence",
+    "t": 118.7
+   },
+   {
+    "label": "Interview shapes to prepare",
+    "t": 169.95
+   },
+   {
+    "label": "The honest bit",
+    "t": 209.95
+   },
+   {
+    "label": "End of module",
+    "t": 247.6
+   }
+  ]
+ },
+ "m11": {
+  "title": "Teaching this to clinical staff",
+  "duration": 275.35,
+  "voice": "bf_emma",
+  "marks": [
+   {
+    "label": "Introduction",
+    "t": 0.0
+   },
+   {
+    "label": "Why these sessions usually fail",
+    "t": 11.85
+   },
+   {
+    "label": "Open with something of theirs that vanished",
+    "t": 53.98
+   },
+   {
+    "label": "One idea per session",
+    "t": 108.83
+   },
+   {
+    "label": "Analogies that survive contact with a ward",
+    "t": 138.85
+   },
+   {
+    "label": "Let them be wrong safely",
+    "t": 192.6
+   },
+   {
+    "label": "Close with one thing to do differently",
+    "t": 231.68
+   },
+   {
+    "label": "End of module",
+    "t": 268.95
+   }
+  ]
+ },
+ "m2": {
+  "title": "Terminology versus classification",
+  "duration": 300.3,
+  "voice": "bf_emma",
+  "marks": [
+   {
+    "label": "Introduction",
+    "t": 0.0
+   },
+   {
+    "label": "The distinction",
+    "t": 12.68
+   },
+   {
+    "label": "SNOMED CT, structurally",
+    "t": 57.15
+   },
+   {
+    "label": "ICD-10 and OPCS-4",
+    "t": 130.6
+   },
+   {
+    "label": "dm+d and the rest",
+    "t": 202.28
+   },
+   {
+    "label": "What this means for your field specification",
+    "t": 244.35
+   },
+   {
+    "label": "End of module",
+    "t": 293.3
+   }
+  ]
+ },
+ "m3": {
+  "title": "Renal data and where it goes",
+  "duration": 266.4,
+  "voice": "bf_emma",
+  "marks": [
+   {
+    "label": "Introduction",
+    "t": 0.0
+   },
+   {
+    "label": "The registry",
+    "t": 13.97
+   },
+   {
+    "label": "The quality dashboard",
+    "t": 68.62
+   },
+   {
+    "label": "Patient-facing and research data",
+    "t": 104.97
+   },
+   {
+    "label": "What the machines already know",
+    "t": 128.82
+   },
+   {
+    "label": "Numbers that must stay computable",
+    "t": 197.4
+   },
+   {
+    "label": "End of module",
+    "t": 259.95
+   }
+  ]
+ },
+ "m4": {
+  "title": "How systems talk",
+  "duration": 225.0,
+  "voice": "bf_emma",
+  "marks": [
+   {
+    "label": "Introduction",
+    "t": 0.0
+   },
+   {
+    "label": "Identity comes first",
+    "t": 12.25
+   },
+   {
+    "label": "HL7 version 2 \u2014 the workhorse",
+    "t": 53.02
+   },
+   {
+    "label": "FHIR \u2014 the modern one",
+    "t": 94.9
+   },
+   {
+    "label": "Sharing beyond the trust",
+    "t": 137.15
+   },
+   {
+    "label": "The questions to ask in meeting one",
+    "t": 174.1
+   },
+   {
+    "label": "End of module",
+    "t": 219.28
+   }
+  ]
+ },
+ "m5": {
+  "title": "Clinical safety: DCB0129 and DCB0160",
+  "duration": 268.0,
+  "voice": "bf_emma",
+  "marks": [
+   {
+    "label": "Introduction",
+    "t": 0.0
+   },
+   {
+    "label": "Two standards, two duties",
+    "t": 17.38
+   },
+   {
+    "label": "The Clinical Safety Officer",
+    "t": 64.15
+   },
+   {
+    "label": "The documents",
+    "t": 104.8
+   },
+   {
+    "label": "Finding hazards that are real",
+    "t": 145.53
+   },
+   {
+    "label": "Adjacent things people confuse with this",
+    "t": 204.32
+   },
+   {
+    "label": "End of module",
+    "t": 258.6
+   }
+  ]
+ },
+ "m6": {
+  "title": "Information governance without the fog",
+  "duration": 255.05,
+  "voice": "bf_emma",
+  "marks": [
+   {
+    "label": "Introduction",
+    "t": 0.0
+   },
+   {
+    "label": "The distinction that resolves most arguments",
+    "t": 12.62
+   },
+   {
+    "label": "The legal layers",
+    "t": 48.08
+   },
+   {
+    "label": "Caldicott",
+    "t": 100.25
+   },
+   {
+    "label": "The artefacts",
+    "t": 154.88
+   },
+   {
+    "label": "The shadow IT trap",
+    "t": 190.35
+   },
+   {
+    "label": "End of module",
+    "t": 248.32
+   }
+  ]
+ },
+ "m7": {
+  "title": "Data literacy that survives contact with a board",
+  "duration": 212.75,
+  "voice": "bf_emma",
+  "marks": [
+   {
+    "label": "Introduction",
+    "t": 0.0
+   },
+   {
+    "label": "Structured, semi-structured, free text",
+    "t": 13.45
+   },
+   {
+    "label": "The six dimensions",
+    "t": 46.3
+   },
+   {
+    "label": "Denominators",
+    "t": 88.12
+   },
+   {
+    "label": "Statistical process control",
+    "t": 131.6
+   },
+   {
+    "label": "Presenting to people who are not you",
+    "t": 181.4
+   },
+   {
+    "label": "End of module",
+    "t": 205.25
+   }
+  ]
+ },
+ "m8": {
+  "title": "The technical coding you actually need",
+  "duration": 247.12,
+  "voice": "bf_emma",
+  "marks": [
+   {
+    "label": "Introduction",
+    "t": 0.0
+   },
+   {
+    "label": "SQL is the one worth learning properly",
+    "t": 12.2
+   },
+   {
+    "label": "JSON and APIs",
+    "t": 58.2
+   },
+   {
+    "label": "Where the real quick wins live",
+    "t": 104.47
+   },
+   {
+    "label": "What you already have",
+    "t": 163.97
+   },
+   {
+    "label": "Where to stop",
+    "t": 203.02
+   },
+   {
+    "label": "End of module",
+    "t": 240.4
+   }
+  ]
+ },
+ "m9": {
+  "title": "Making change actually stick",
+  "duration": 227.25,
+  "voice": "bf_emma",
+  "marks": [
+   {
+    "label": "Introduction",
+    "t": 0.0
+   },
+   {
+    "label": "Deployment is not transformation",
+    "t": 11.15
+   },
+   {
+    "label": "Benefits, stated properly",
+    "t": 42.02
+   },
+   {
+    "label": "The business case",
+    "t": 90.97
+   },
+   {
+    "label": "Improvement method",
+    "t": 128.68
+   },
+   {
+    "label": "People",
+    "t": 187.95
+   },
+   {
+    "label": "End of module",
+    "t": 220.75
+   }
+  ]
  }
 }
